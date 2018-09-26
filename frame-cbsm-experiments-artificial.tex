@@ -1,0 +1,50 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\centering
+	{\small
+	\begin{tikzpicture}
+	[ data/.style={align=center, draw, minimum width=2em, rounded corners}
+	, func/.style={align=center, draw, minimum width=2em}
+	, node distance = 2em and 3em
+	]
+		\node[func] (gen) {\strut generate corpus};
+		\node[data, right = of gen] (c) {\strut corpus};
+
+		\node[data, above = 1.5em of gen] (size) {\strut corpus size};
+		\node[data, left = of gen] (pta) {\strut pta};
+
+		\node[func, below = of gen] (cmp) {\strut compare};
+		\node[data, below = of c] (pta seq) {\strut sequence of pta\s};
+
+		\node[func] (cbsm) at ([xshift = 7em] $(c.south)!0.5!(pta seq.north)$) {\strut cbsm};
+
+		\node[data, left = of cmp] (res) {\strut iteration or “no”};
+		\begin{scope}[->, rounded corners]
+			\draw (size) -- (gen);
+			\draw (pta) -- (gen);
+			\draw (gen) -- (c);
+			\draw (c) -| (cbsm);
+			\draw (cbsm) |- (pta seq);
+			\draw (pta seq) -- (cmp);
+			\draw (cmp) -- (res);
+			\draw (pta) -| ({$(pta.east)!0.5!(gen.west)$} |- {$(gen.south)!0.5!(cmp.north)$}) -| (cmp);
+		\end{scope}
+	\end{tikzpicture}}
+	\\[2em]
+	\begin{block}<2->{Result}
+		\centering
+		\begin{tabular}{r@{\qquad}r@{ }lr@{ }l}
+			\textbf{\usebeamercolor*[fg]{description item}Inputs:}
+			& 11 & ta
+			& \visible<3->{36} & \visible<3->{pta}
+		\\[0.5em]
+			\visible<4->{\textbf{\usebeamercolor*[fg]{description item}Result:}}
+			& \visible<5->{8} & \visible<5->{ta recovered}
+			& \visible<4->{31} & \visible<4->{pta recovered}
+		\\	&& \hfill\llap{\footnotesize\visible<5->{(each pta recovered)}}
+		\end{tabular}
+	\end{block}
+\end{standaloneframe}
+\end{document}

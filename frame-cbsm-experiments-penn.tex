@@ -1,0 +1,94 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}[t]{\jobname}
+	\centering\small
+	\begin{tikzpicture}
+	[ data/.style = {align = center, draw, rounded corners}
+	, func/.style = {align = center, draw}
+	, node distance = 1.5em
+	]
+		\newcommand{\stacklist}
+		{ 1.25em/0.390625%
+		, 1.1580882352941178em/0.78125%
+		, 1.0546875em/1.5625%
+		, 0.9375em/3.125%
+		, 0.8035714285714286em/6.25%
+		, 0.6490384615384616em/12.5%
+		, 0.46875em/25.0%
+		, 0.2556818181818182em/50.0%
+		, 0.0em/100.0%
+		}
+
+		\node[data, text = HKS41K70] (ptb0)  {Penn Treebank  section 0 \\ (1\,921 trees)};
+
+		\node[data, right = 0.3333em of ptb0, text = HKS57K100] (ptb23) {Penn Treebank section 23 \\ (2\,416 trees)};
+		\node[data, below = 0.6666em of ptb23.south west, anchor = north west, xshift = 0.3333em + \pgflinewidth] (sents) {sequence of \\ sentences};
+		\node[func, right = of sents] (yield) {\strut yield};
+		\node[func, below = of sents] (parse) {\strut parse};
+		\node[data, right = of parse] (trees) {sequence \\ of trees};
+		\node[func, right = of trees] (evalb) {\strut evalb};
+
+		\foreach \t/\c in \stacklist {
+			\node[xshift = \t, yshift = \t, color = black!\c, fill = white, data] (ptas) at (ptb0 |- parse) {\strut sequence of pta\s};
+			\node[xshift = \t, yshift = \t, color = black!\c, fill = white, data, right = of evalb, text = HKS57K100] (Fmeas) {bracketing \\ F-measure};
+		}
+
+		\node[func, above = of ptas] (cbsm)  {\strut cbsm};
+
+		\node[func, fit = (sents) (yield) (parse) (trees) (evalb)] {};
+
+		\begin{scope}[->, rounded corners]
+			\draw (ptb0)  -- (cbsm) ;
+			\draw (cbsm)  -- (ptas) ;
+			\draw (ptas)  -- (parse);
+			\draw (sents) -- (parse);
+			\draw (parse) -- (trees);
+			\draw (yield) -- (sents);
+			\draw (trees) -- (evalb);
+			\draw (evalb) -- (Fmeas);
+			%\draw (yield |- ptb23.south) -- (yield);
+			%\draw (yield |- ptb23.south) -- ++(0, -0.8em) -| (evalb);
+			\draw (ptb23) -- (evalb |- ptb23.east) |- (yield);
+			\draw (ptb23) -| (evalb);
+		\end{scope}
+		%\node[below = 0.8em of ptas, draw, shape = ellipse, inner sep = 0.1em, fill = white] {\emph{for each pta}};
+	\end{tikzpicture}
+	\\[0.5em]
+	\only<2->{%
+	\begin{tikzpicture}
+		\pgfplotstableread[col sep = comma]{csv-07-evalb-wsj-2300-2320-len-restricted.csv}\dataEvalb
+		\begin{axis}
+			[ extra tick style = {grid = major, ticklabel pos = upper, tick style = {draw = none}}
+			, group/group size = 1 by 3
+			, group/vertical sep = 1.5cm
+			, group/xlabels at = edge bottom
+			, height = 11.5em
+			, scaled ticks = false
+			, set layers
+			, tick pos = lower
+			, width = 0.85\linewidth
+			, xlabel = {iteration (from 11\,729 to 11\,808)}
+			, xmin = 11726
+			, xmax = 11811
+			, xtick distance = 20
+			, extra x ticks = {11803}
+			, extra y ticks = {69.25, 71.06}
+			, only marks
+			, point meta min = 0
+			, point meta max = 1
+			, scatter
+			, scatter src = explicit
+			, ylabel = {Bracketing \\ F-measure [\%]}
+			, ylabel style = {align = left}
+			]
+			\addplot table
+				[ meta expr = \thisrow{Number of Skip  sentence}/\thisrow{Number of sentence}
+				, x = iteration
+				, y = Bracketing FMeasure
+				] {\dataEvalb};
+		\end{axis}
+	\end{tikzpicture}%
+	}
+\end{standaloneframe}
+\end{document}

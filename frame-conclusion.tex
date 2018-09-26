@@ -1,0 +1,25 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\title{\jobname}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\only<+->{}
+	\begin{itemize}[<1-|alert@+>]
+	\item (weighted) tree automata
+	\item read-off automaton
+	\item adapting weights:
+		\begin{itemize}[<1-|alert@.>]
+		\item EM algorithm
+		\end{itemize}
+	\item adapting state behavior (and weights):
+		\begin{itemize}[<1-|alert@.>]
+		\item state splitting and merging algorithm
+		\item count-based state merging
+		\end{itemize}
+	\item adapting branching behavior:
+		\begin{itemize}[<1-|alert@.>]
+		\item binarization
+		\end{itemize}
+	\end{itemize}
+\end{standaloneframe}
+\end{document}

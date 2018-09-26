@@ -1,0 +1,54 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\title{\jobname}
+\begin{document}
+\newcommand*{\myheight}{75.2mm}%
+\newcommand*{\mywidth} {42.3mm}%
+\newcommand*{\mygraphics}[1]{\includegraphics[height = \myheight]{#1}}%
+\newcommand*{\myvideo}[1]{%
+	\includemedia
+		[ width = \mywidth
+		, height = \myheight
+		, addresource = #1
+		, activate = pageopen
+		, playbutton = none
+		, flashvars =
+			{ source = #1
+			& loop = true
+			& hideBar = true
+			}
+		]{}{VPlayer.swf}%
+}%
+\begin{standaloneframe}{\jobname}
+	\begin{columns}<2->
+	\column{13em}
+		\setcounter{beamerpauses}{2}%
+		\begin{itemize}[<+-|alert@+>]
+		\item grammar checking
+		\item handwriting recognition
+		\item translation
+		\item speech recognition
+		\item news article generation
+		%\item Screen Reader
+		\end{itemize}
+	\column{\mywidth}
+		\begin{overprint}
+		\onslide<-5>
+			\setbeamercolor{black}{bg = black, fg = white}%
+			\begin{beamercolorbox}[ht = \myheight, rounded = true, shadow = true]{black}%
+				\setcounter{beamerpauses}{2}%
+				\only<+>{\mygraphics{graphics-Android-Google-Docs-grammar-checker.png}}%
+				\only<+>{\myvideo{video-Android-Google-Handwriting-Input.mp4}}%
+				\only<+>{\mygraphics{graphics-Android-Google-Translate.png}}%
+				\only<+>{\myvideo{video-Android-Gboard-speech-recognition.mp4}}%
+			\end{beamercolorbox}%
+		\onslide<6>
+			\raisebox{8mm}[\myheight][0pt]{%
+				\href{https://openclipart.org/detail/182846/newspaper}{%
+					\includegraphics[width = \mywidth]{graphics-newspaper.pdf}%
+				}%
+			}%
+		\end{overprint}
+	\end{columns}
+\end{standaloneframe}
+\end{document}

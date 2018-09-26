@@ -1,0 +1,254 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+\begin{columns}[T]
+\column{0.5\linewidth}
+	\begin{overprint}
+	\onslide<-3>
+		\begin{center}
+		\begin{tikzpicture}[anchor=base, level distance=3em]
+			\node (t) {}
+				child { node {\(σ\)}
+					child { node {\(α\)}
+						edge from parent node[left, visible=<2->] {\(\nt{A}\)}
+					}
+					child { node {\(σ\)}
+						child { node {\(β\)}
+							edge from parent node[left, visible=<2->] {\(\nt{B}\)}
+						}
+						child { node {\(σ\)}
+							child { node {\(β\)}
+								edge from parent node[left, visible=<2->] {\(\nt{B}\)}
+							}
+							child { node {\(β\)}
+								edge from parent node[right, visible=<2->] {\(\nt{B}\)}
+							}
+							edge from parent node[right, visible=<2->] {\(\nt{D}\)}
+						}
+						edge from parent node[right, visible=<2->] {\(\nt{C}\)}
+					}
+					edge from parent node[right, visible=<2->] {\(\nt{S}\)}
+					edge from parent [draw=none]
+				};
+				\node[left=1em of t-1] {\(t_1\colon\)};
+		\end{tikzpicture}
+
+		\begin{tikzpicture}[anchor=base, level distance=3em]
+			\node (t) {}
+				child { node {\(σ\)}
+					child { node {\(β\)}
+						edge from parent node[left, visible=<2->] {\(\nt{B}\)}
+					}
+					child { node {\(β\)}
+						edge from parent node[right, visible=<2->] {\(\nt{B}\)}
+					}
+					edge from parent node[right, visible=<2->] {\(\nt{D}\)}
+					edge from parent [draw=none]
+				};
+			\node[left=1em of t-1] {\(t_2\colon\)};
+		\end{tikzpicture}
+		\end{center}
+	\onslide<5->
+		\begin{align*}
+			G_1 & = (N_1, Σ, I_1, Δ_1)
+		\\[1.5em]
+			N_1 & = \{\mhl<19->[fill=HKS44K60]{\nt{S}}, \mhl<17->{\nt{A}}, \mhl<17->{\nt{B}}, \mhl<5,19->[onslide={<5>fill=HKS65K60}, onslide={<19->fill=HKS44K60}]{\nt{C}}\}
+		\\
+			Σ & = \{σ^{(2)}, α^{(0)}, β^{(0)}\}
+		\\
+			I_1 & = \{\mhl<19->[fill=HKS44K60]{\nt{S}}, \mhl<5,19->[onslide={<5>fill=HKS65K60}, onslide={<19->fill=HKS44K60}]{\nt{C}}\}
+		\end{align*}
+		\begin{align*}
+			Δ_1\colon
+			\mhl<19->[fill=HKS44K60]{\nt{S}} & → σ(\mhl<17->{\nt{A}}, \mhl<5,19->[onslide={<5>fill=HKS65K60}, onslide={<19->fill=HKS44K60}]{\nt{C}})
+		\\
+			\mhl<5,19->[onslide={<5>fill=HKS65K60}, onslide={<19->fill=HKS44K60}]{\nt{C}} & → σ(\mhl<17->{\nt{B}}, \mhl<5,19->[onslide={<5>fill=HKS65K60}, onslide={<19->fill=HKS44K60}]{\nt{C}})
+		\\
+			\mhl<5,19->[onslide={<5>fill=HKS65K60}, onslide={<19->fill=HKS44K60}]{\nt{C}} & → σ(\mhl<17->{\nt{B}}, \mhl<17->{\nt{B}})
+		\\
+			\mhl<17->{\nt{A}} & → α
+		\\
+			\mhl<17->{\nt{B}} & → β
+		\end{align*}
+	\end{overprint}
+\column{0.5\linewidth}
+	\begin{overprint}
+	\onslide<2>
+		\begin{center}
+		\[
+			\nt{S} = \statetree{
+			\node {\(σ\)}
+				child { node {\(α\)}
+				}
+				child { node {\(σ\)}
+					child { node {\(β\)}
+					}
+					child { node {\(σ\)}
+						child { node {\(β\)}
+						}
+						child { node {\(β\)}
+						}
+					}
+				};
+			}
+		\]
+		\[
+			\nt{C} = \statetree{
+			\node {\(σ\)}
+				child { node {\(β\)}
+				}
+				child { node {\(σ\)}
+					child { node {\(β\)}
+					}
+					child { node {\(β\)}
+					}
+				};
+			}
+		\]
+		\[
+			\nt{D} = \statetree{
+			\node {\(σ\)}
+				child { node {\(β\)}
+				}
+				child { node {\(β\)}
+				};
+			}
+		\]
+		\[
+			\nt{A} = \tikz[baseline=(n.base)]{\node[draw=nt, rounded corners] (n) {\(α\)};}
+			\qquad
+			\nt{B} = \tikz[baseline=(n.base)]{\node[draw=nt, rounded corners] (n) {\(β\)};}
+		\]
+		\end{center}
+	\onslide<3-5>
+		\begin{align*}
+			G_0 & = (N_0, Σ, I_0, Δ_0)
+		\\[1.5em]
+			N_0 & = \{\nt{S}, \nt{A}, \nt{B}, \mhl<4->[fill=HKS65K60]{\nt{C}}, \mhl<4->[fill=HKS65K60]{\nt{D}}\}
+		\\
+			Σ & = \{σ^{(2)}, α^{(0)}, β^{(0)}\}
+		\\
+			I_0 & = \{\nt{S}, \mhl<4->[fill=HKS65K60]{\nt{D}}\}
+		\end{align*}
+		\begin{align*}
+			Δ_0\colon
+			\nt{S} & → σ(\nt{A}, \mhl<4->[fill=HKS65K60]{\nt{C}})
+		\\
+			\mhl<4->[fill=HKS65K60]{\nt{C}} & → σ(\nt{B}, \mhl<4->[fill=HKS65K60]{\nt{D}})
+		\\
+			\mhl<4->[fill=HKS65K60]{\nt{D}} & → σ(\nt{B}, \nt{B})
+		\\	\nt{A} & → α
+		\\	\nt{B} & → β
+		\end{align*}
+	\onslide<6>
+		\begin{block}{regular tree grammar (rtg)}
+			tuple \(G = (N, Σ, I, Δ)\) where
+			\begin{itemize}
+			\item
+				\(N\) alphabet \hfill (\emph{non-terminals})
+			\item
+				\(Σ\) ranked alphabet \hfill (\emph{terminals})
+			\item
+				\(I ⊆ N\) alphabet \hfill (\emph{initial non-t.})
+			\item
+				\(Δ\) is a finite set of \emph{rules} of form \(A_0 → σ(A_1, \dots, A_k)\) where \(k ∈ ℕ\), \(σ ∈ Σ^{(k)}\), \(A_i ∈ N\).
+			\end{itemize}
+		\end{block}
+	\onslide<7-15>
+		\begin{center}
+		\begin{tikzpicture}[anchor=base, level distance=3em]
+			\node (t) {}
+				child[onslide={<8>opacity=0.25}] { node {\(σ\)}
+					child[onslide={<8-9>opacity=0.25}] { node {\(α\)}
+						edge from parent node[left, visible=<9->] {\(\nt{A}\)}
+					}
+					child[onslide={<8-10>opacity=0.25}] { node {\(σ\)}
+						child[onslide={<8-11>opacity=0.25}] { node {\(β\)}
+							edge from parent node[left, visible=<11->] {\(\nt{B}\)}
+						}
+						child[onslide={<8-12>opacity=0.25}] { node {\(σ\)}
+							child[onslide={<8-13>opacity=0.25}] { node {\(β\)}
+								edge from parent node[left, visible=<13->] {\(\nt{B}\)}
+							}
+							child[onslide={<8-14>opacity=0.25}] { node {\(β\)}
+								edge from parent node[right, visible=<13->] {\(\nt{B}\)}
+							}
+							edge from parent node[right, visible=<11->] {\(\nt{C}\)}
+						}
+						edge from parent node[right, visible=<9->] {\(\nt{C}\)}
+					}
+					edge from parent node[right, visible=<8->] {\(\nt{S}\)}
+					edge from parent [draw=none]
+				};
+				\node[left=1em of t-1] {\(t_1\colon\)};
+		\end{tikzpicture}
+		\end{center}
+	\onslide<16>
+		\begin{block}{bottom-up deterministic rtg}
+			\centering
+			\((N, Σ, I, Δ)\) is bottom-up deterministic
+
+			\emph{if}
+
+			for every \(σ(A_1, \dots, A_k)\) there is at most one \(A_0\) such that \(A_0 → σ(A_1, \dots, A_k) ∈ Δ\)
+		\end{block}
+		\begin{flushright}
+			\(\implies\) there is at most one derivation for a tree
+		\end{flushright}
+% 	\onslide<18-19>
+% 		\begin{align*}
+% 			G_2 & = (N_2, Σ, I_2, Δ_2)
+% 		\\[1.5em]
+% 			N_2 & = \{S, \mhl<18->{A}, C\}
+% 		\\
+% 			Σ & = \{σ^{(2)}, α^{(0)}, β^{(0)}\}
+% 		\\
+% 			I_2 & = \{S, C\}
+% 		\end{align*}
+% 		\begin{align*}
+% 			Δ_2\colon
+% 			\mhl<1>{S} & → σ(\mhl<18->{A}, C)
+% 		\\	\mhl<1>{C} & → σ(\mhl<18->{A}, C)
+% 		\\	\mhl<1>{C} & → σ(\mhl<18->{A}, \mhl<18->{A})
+% 		\\	\mhl<18->{A} & → α
+% 		\\	\mhl<18->{A} & → β
+% 		\end{align*}
+	\onslide<18->
+		\begin{align*}
+			G_{\alt<20->32} & = (N_{\alt<20->32}, Σ, I_{\alt<20->32}, Δ_{\alt<20->32})
+		\\[1.5em]
+			N_{\alt<20->32} & = \{\mhl<20->[fill=HKS44K60]{\nt{S}}, \mhl<18->{\nt{A}}\only<-19>{, \nt{C}}\}
+		\\
+			Σ & = \{σ^{(2)}, α^{(0)}, β^{(0)}\}
+		\\
+			I_{\alt<20->32} & = \{\mhl<20->[fill=HKS44K60]{\nt{S}}\only<-19>{, \nt{C}}\}
+		\end{align*}
+		\begin{align*}
+			Δ_{\alt<20->32}\colon
+			\mhl<20->[fill=HKS44K60]{\nt{S}} & → σ(\mhl<18->{\nt{A}}, \mhl<20->[fill=HKS44K60]{\nt{\alt<20->SC}})
+		\\	\uncover<-19>{\mhl<1>{\nt{C}}} & \uncover<-19>{{} → σ(\mhl<18->{\nt{A}}, \mhl<1>{\nt{C}})}
+		\\	\mhl<20->[fill=HKS44K60]{\nt{\alt<20->SC}} & → σ(\mhl<18->{\nt{A}}, \mhl<18->{\nt{A}})
+		\\	\mhl<18->{\nt{A}} & → α
+		\\	\mhl<18->{\nt{A}} & → β
+		\end{align*}
+	\end{overprint}
+\end{columns}%
+\only<5>{%
+	\tikz[overlay, shift=(current page.center), xshift=-1em, yshift=8.5em]{
+		\node[single arrow, fill=HKS41K20, shape border rotate=180] {merge \(\nt{C}\), \(\nt{D}\)};
+	}%
+}%
+\only<18-19>{%
+	\tikz[overlay, shift=(current page.center), xshift=-1em, yshift=8.5em]{
+		\node[single arrow, fill=HKS41K20] {merge \(\nt{A}\), \(\nt{B}\)};
+	}%
+}%
+\only<20>{%
+	\tikz[overlay, shift=(current page.center), xshift=-1em, yshift=8.5em]{
+		\node[single arrow, fill=HKS41K20, align=right] {merge \(\nt{A}\), \(\nt{B}\)\\and \(\nt{S}\), \(\nt{C}\)};
+	}%
+}%
+\end{standaloneframe}
+\end{document}
+%kate: default-dictionary en

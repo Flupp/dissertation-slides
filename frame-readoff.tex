@@ -1,0 +1,141 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+%         1 2 3 4 5 6 7 8 9 0 1 2
+\timeline{- + + + + + + + + + + -}{tlRuns}
+\timeline{- - + - - - - - - - - -}{tlRuleSsAB}
+\timeline{- - - + - - - - - - - -}{tlRuleAa}
+\timeline{- - - - + - - - - - - -}{tlRuleBbB}
+\timeline{- - - - - + - - - - - -}{tlRuleBbA}
+\timeline{- - - - - - + - - - - -}{tlRootState}
+\timeline{- - - - - - - + + + + +}{tlMLE}
+\timeline{- - - - - - - - + + + +}{tlEM}
+\timeline{- - - - - - - - - + + +}{tlWeights}
+\timeline{- - - - - - - - - - + -}{tlWeightsInTrees}
+\timeline{- - - - - - - - - - + +}{tlLklhd}
+\timeline{- - - - - - - - - - - +}{tlOdd}
+\begin{standaloneframe}{\jobname}
+\centering
+\begin{tikzpicture}
+[ text height=0.75em
+, text depth=0.25em
+]
+	\node at (2em, 3em) {corpus \(c\):};
+	\node<\tlRuleSsAB-> at (15em, 3em) {automaton \(\oalt<\tlWeights>{ℳ}{\mathcal{A}}\):};
+	\begin{scope}
+	[ level distance=2.25em
+	, sibling distance=1.5em
+	, anchor=base
+	, inner sep=0.1em
+	, node distance=0.4em
+	]
+		\node[onslide={<\tlRuleSsAB>alert.bg}] (t1) at (0, 0) {\(σ\)}
+			child { node[onslide={<\tlRuleAa>alert.bg}] {\(α\)}
+			}
+			child { node[onslide={<\tlRuleBbA>alert.bg}] {\(β\)}
+				child { node[onslide={<\tlRuleAa>alert.bg}] {\(α\)}
+				}
+			};
+		\node[onslide={<\tlRuleSsAB>alert.bg}] (t2) at (6em, 0) {\(σ\)}
+			child { node[onslide={<\tlRuleAa>alert.bg}] {\(α\)}
+			}
+			child { node[onslide={<\tlRuleBbB>alert.bg}] {\(β\)}
+				child { node[onslide={<\tlRuleBbB>alert.bg}] {\(β\)}
+					child { node[onslide={<\tlRuleBbA>alert.bg}] {\(β\)}
+						child { node[onslide={<\tlRuleAa>alert.bg}] {\(α\)}
+						}
+					}
+				}
+			};
+		\node[base left = 1em of t1] {$t_1\colon$};
+		%\node at (0, -9em) {$c(t_1) = 1$};
+		\node[base left = 1em of t2] {$t_2\colon$};
+		%\node[anchor=base] at (5em, -9em) {$c(t_2) = 1$};
+	\end{scope}
+
+	\matrix
+	[ matrix anchor=base.base west
+	, every node/.style={anchor=base west}
+	, row sep=0.1em
+	, ampersand replacement=\&
+	] at (13em, 0) {
+		\uncover<\tlRuleSsAB->{\node[onslide=<\tlRuleSsAB>alert.bg] (base) {$\nt{S} → σ(\nt{A}, \nt{B})$};}
+	\&
+		\uncover<\tlWeights>{\node {${} ↦ 1$};}
+	\\
+		\uncover<\tlRuleAa->{\node[onslide=<\tlRuleAa>alert.bg] {$\nt{A} → α$};}
+	\&
+		\uncover<\tlWeights>{\node {${} ↦ 1$};}
+	\\
+		\uncover<\tlRuleBbB->{\node[onslide=<\tlRuleBbB>alert.bg] {$\nt{B} → β(\nt{B})$};}
+	\&
+		\uncover<\tlWeights>{\node {${} ↦ 0.5$};}
+	\\
+		\uncover<\tlRuleBbA->{\node[onslide=<\tlRuleBbA>alert.bg] {$\nt{B} → β(\nt{A})$};}
+	\&
+		\uncover<\tlWeights>{\node {${} ↦ 0.5$};}
+	\\[0.25em]
+		\uncover<\tlRootState->{\node[onslide={<\tlRootState>alert.bg}] (iota) {\(\nt{S}\)};}
+	\&
+		\uncover<\tlWeights>{\node {${} ↦ 1$};}
+	\\};
+
+	\node<\tlRuleSsAB-> [left=0.4em of base, inner sep=0] {\(\alt<\tlWeights>{δ}{Δ}\colon\)};
+	\node<\tlRootState->[left=0.4em of iota, inner sep=0] {\(\alt<\tlWeights>{ι}{I}\colon\)};
+
+	\uncover<\tlLklhd>{
+		\node[anchor=base west] at (13em, -9.5em) {$\lklhd{c}{⟦ℳ⟧} = 0.5^4 = 0.0625$};
+	}
+	\only<\tlRuns>{
+		\begin{scope}[node distance = -0.3em and -0.6em, text depth = 0]
+			\node[above right = of t1, onslide={<\tlRootState>alert.bg}] {\(\nt{S}\)};
+			\node[above left  = of t1-1      ] {\(\nt{A}\)};
+			\node[above right = of t1-2      ] {\(\nt{B}\)};
+			\node[above right = of t1-2-1    ] {\(\nt{A}\)};
+
+			\node[above right = of t2, onslide={<\tlRootState>alert.bg}] {\(\nt{S}\)};
+			\node[above left  = of t2-1      ] {\(\nt{A}\)};
+			\node[above right = of t2-2      ] {\(\nt{B}\)};
+			\node[above right = of t2-2-1    ] {\(\nt{B}\)};
+			\node[above right = of t2-2-1-1  ] {\(\nt{B}\)};
+			\node[above right = of t2-2-1-1-1] {\(\nt{A}\)};
+		\end{scope}
+	}
+	\only<\tlWeightsInTrees>{
+		\begin{scope}[node distance=0em, every node/.style=alert.bg, inner sep=0.2em, text depth = 0]
+			\scriptsize
+
+			\node[base right=of t1] {1};
+			\node[base left=of t1-1] {1};
+			\node[base right=of t1-2] {0.5};
+			\node[base right=of t1-2-1] {1};
+
+			\node[base right=of t2] {1};
+			\node[base left=of t2-1] {1};
+			\node[base right=of t2-2] {0.5};
+			\node[base right=of t2-2-1] {0.5};
+			\node[base right=of t2-2-1-1] {0.5};
+			\node[base right=of t2-2-1-1-1] {1};
+		\end{scope}
+	}
+
+	\draw<\tlOdd>[decorate, decoration=brace] (t1-2.north east) -- node[right, alert.bg, inner sep=0.1em, xshift=0.3em] {odd} (t1-2.south east);
+	\draw<\tlOdd>[decorate, decoration=brace] (t2-2.north east) -- node[right, alert.bg, inner sep=0.1em, xshift=0.3em] {odd} (t2-2-1-1.south east);
+\end{tikzpicture}
+\begin{columns}
+\column<\tlMLE>{0.59\linewidth}
+	\begin{block}{mle for pta\s with fixed ta \(\mathcal{A}\)}
+		\centering
+		\(\displaystyle
+			%\mle[\mathbfit{M}]{c} =
+			\argmax_{(ι, δ) ∈ Θ}\ \lklhd{c}{⟦(\mathcal{A}, ι, δ)⟧}
+		\)
+		\\[0.5em]
+		\(Θ = \{(ι, δ) \mid \text{\((\mathcal{A}, ι, δ)\) is a probabilistic wta}\}\)
+	\end{block}
+\column<\tlEM>{0.41\linewidth}
+	\flushright
+	\(⟹\) \emph{EM algorithm} [\cite{1977DempsterLairdRubin}] can approximate local optimum
+\end{columns}
+\end{standaloneframe}
+\end{document}

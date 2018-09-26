@@ -1,0 +1,44 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\centering
+	\begin{tikzpicture}
+	[ anchor = base
+	, level sep = 1em
+	, node distance = 1.5em
+	, sibling sep = 0.25em
+	]
+		\graph[fresh nodes, tree layout]
+		{
+			NP --
+			{ DT -- "the"
+			, JJ -- "little"
+			, JJ -- "red"
+			, NN [x = 0, y = 0] -- "flower"
+			}
+		};
+
+		\visible<2->{
+			\node[base right = of NN, draw, shape = single arrow, minimum height = 5.5em] (training) {\strut training};
+			\node[base right = of training] {\(\nt{A} → \text{NP}(\nt{B}, \nt{C}, \nt{D}, \nt{E})\)};
+		}
+		\visible<3->{
+			\graph[fresh nodes, tree layout]
+			{
+				NP --
+				{ DT -- "the"
+				, JJ -- "nice"
+				, JJ -- "little"
+				, JJ -- "red"
+				, NN [x = 0, y = -9em] -- "flower"
+				}
+			};
+		}
+		\visible<4->{
+			\node[base right = of NN, draw, shape = single arrow, minimum height = 5.5em] (parse) {\strut accepted?};
+			\node[base right = of parse] {no};
+		}
+	\end{tikzpicture}
+\end{standaloneframe}
+\end{document}

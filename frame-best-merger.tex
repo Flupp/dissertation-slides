@@ -1,0 +1,49 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\title{\jobname}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\hfill
+	{\small\tikz{\node[fill=HKS92K20, inner sep=0]{\begin{tabular}{l@{ \ldots{} }l}
+		\(\mathscr{A}\) & bottom-up deterministic ta \((Q, Σ, I, Δ)\)
+	\\	\(c\) & corpus over \(\trees{Σ}\)
+	\\	\(Π\) & set of all bottom-up determinism preserving mergers for \(\mathscr{A}\)
+	\end{tabular}};}}
+	\begin{block}{maximize the likelihood (again)}
+		\[
+			\argmax_{π ∈ Π} \lklhd{c}{\semantics{\mle[π(\mathscr{A})]{c}}}
+			\uncover<3->{
+				=
+				\argmax_{π ∈ Π}
+					\frac
+						{\lklhd{c}{\semantics{\mle[π(\mathscr{A})]{c}}}}
+						{\lklhd{c}{\semantics{\mle[\mathscr{A}]{c}}}}
+			}
+		\]
+	\end{block}
+	\vspace*{-1em}
+	\begin{overprint}
+	\onslide<2-3>
+		\begin{block}{combining likelihood and mle}
+			\[
+				\lklhd{c}{\semantics{\mle[\mathscr{A}]{c}}}
+				= \frac
+					{∏_{q ∈ Q} {c_{\mathscr{A}}^{\mathrm{I}}(q)}^{c_{\mathscr{A}}^{\mathrm{I}}(q)}}
+					{\corpussize{c}}
+				· \frac
+					{∏_{τ ∈ Δ} {c_{\mathscr{A}}^{\mathrm{Δ}}(τ)}^{c_{\mathscr{A}}^{\mathrm{Δ}}(τ)}}
+					{∏_{q ∈ Q} {c_{\mathscr{A}}^{\mathrm{Q}}(q)}^{c_{\mathscr{A}}^{\mathrm{Q}}(q)}}
+			\]
+		\end{block}
+	\onslide<4>
+		\begin{block}{}
+			Assuming every merger
+			\begin{itemize}
+			\item does not collapse rules or root states, and
+			\item preserves bottom-up determinism,
+			\end{itemize}
+			it is best to merge the two least frequent non-terminals (w.r.t.\@ \(c_{\mathscr{A}}^{\mathrm{Q}}\)).
+		\end{block}
+	\end{overprint}
+\end{standaloneframe}
+\end{document}

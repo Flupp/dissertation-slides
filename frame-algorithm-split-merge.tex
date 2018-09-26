@@ -1,0 +1,124 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+%         1 2 3 4 5 6 7
+\timeline{+ - - - - - -}{tlBPRef}
+\timeline{- + + + + + +}{tlPseudocode}
+\timeline{+ + - + + + +}{tlFlowchart}
+\timeline{- - + - - - -}{tlTheorem}
+\timeline{- - - - + + -}{tlSoutSplit}
+\timeline{- - - - - + -}{tlSoutEM}
+\begin{standaloneframe}{\jobname}
+	\transfade<\tlSoutSplit,\tlSoutEM>%
+	\begin{overprint}
+	\onslide<\tlBPRef>
+		\begin{block}{Berkeley Parser}
+			\printfullcite{2006PetrovBarrettThibauxKlein}
+		\end{block}
+	\onslide<\tlPseudocode>
+		\begin{description}
+		\item[\textbf{Input:} \usebeamertemplate{itemize item}]
+			corpus \(c\)
+		\item[\usebeamertemplate{itemize item}]
+			pta $ℳ_0$ such that $\lklhd{c}{⟦ℳ_0⟧} > 0$
+		%\item[\usebeamertemplate{itemize item}]
+		%	\(μ ∈ [0, 1]\) and \(ε ∈ {]0, 1[}\)
+		\item[\textbf{Output:} \usebeamertemplate{itemize item}]
+			sequence of pta\s
+		\end{description}
+		\begin{algorithmic}
+			\For{\(i ← 1, 2, \dots\)}
+				\State
+					\sout<\tlSoutSplit>{\makebox[18.5em]{%
+						\(ℳ'_1 ← \Call{split}{ℳ_{i-1}}\);%
+						\hfill%
+						\(ℳ'_2 ← \Call{EM}{ℳ'_1, c}\)%
+					}}
+				\State
+					\makebox[18.5em]{%
+						\(ℳ'_3 ← \Call{merge}{ℳ'_2, c}\);%
+						\hfill%
+						\sout<\tlSoutEM>{\(ℳ_i ← \Call{EM}{ℳ'_3, c}\)}%
+					}
+			\EndFor
+		\end{algorithmic}
+	\end{overprint}
+	\begin{overprint}
+	\onslide<\tlFlowchart>
+		\centering
+		\vspace{1.25em}
+		\footnotesize
+		\begin{tikzpicture}
+		[ data/.style={align=center, draw, rounded corners}
+		, func/.style={align=center, draw}
+		]
+		\matrix[column sep=3em, row sep=2em, ampersand replacement = \&]{
+			\coordinate (init);
+		\&
+			\node (Mi)      [data                              ] {\strut \(ℳ_i\)};
+		\&
+			\node (split)   [func, invisible = {<\tlSoutSplit>}] {\strut \Call{split}{}};
+		\&
+			\node (M1)      [data, invisible = {<\tlSoutSplit>}] {\strut \(ℳ'_1\)};
+		\\\&
+			\node (EMmerge) [func, invisible = {<\tlSoutEM>}   ] {\strut \Call{EM}{}};
+		\&
+			\node (corpus)  [data                              ] {\strut corpus};
+		\&
+			\node (EMsplit) [func, invisible = {<\tlSoutSplit>}] {\strut \Call{EM}{}};
+		\\\&
+			\node (M3)      [data, invisible = {<\tlSoutEM>}   ] {\strut \(ℳ'_3\)};
+		\&
+			\node (merge)   [func                              ] {\strut \Call{merge}{}};
+		\&
+			\node (M2)      [data, invisible = {<\tlSoutSplit>}] {\strut \(ℳ'_2\)};
+		\\};
+
+		\begin{scope}[->, line cap = rect, rounded corners]
+			\draw (init)    -- (Mi) node[midway, above] {\(i ≔ 0\)};
+			\path (EMmerge) -- (Mi) node[midway, left ] {\(i ≔ i + 1\)};
+			\draw (corpus) to[bend left=20] (merge);
+			\alt<\tlSoutSplit>{%
+				\draw[rounded corners] (Mi) -- (M1.center) |- (merge);
+			}{%
+				\draw (Mi)      -- (split);
+				\draw (split)   -- (M1);
+				\draw (M1)      -- (EMsplit);
+				\draw (EMsplit) -- (M2);
+				\draw (M2)      -- (merge);
+				\draw (corpus) to[bend left=20] (EMsplit);
+			}%
+			\alt<\tlSoutEM>{%
+				\draw[rounded corners] (merge) -| (Mi);
+			}{%
+				\draw (merge)   -- (M3);
+				\draw (M3)      -- (EMmerge);
+				\draw (EMmerge) -- (Mi);
+				\draw (corpus) to[bend left=20] (EMmerge);
+			}%
+		\end{scope}
+		\end{tikzpicture}
+	\onslide<\tlTheorem>
+		\begin{block}{Theorem \hfill [TD]}\it
+			Let \(i ≥ 1\) be an iteration of the state splitting and merging algorithm.
+			Under the assumptions that
+			\begin{itemize}
+			\item
+				\(\Call{EM}{ℳ, c} = \mle[c]{ℳ}\) for every pta \(ℳ\), and
+			\item
+				\(\crisp{ℳ_{i-1}}\) is a sub-ta of \(\crisp{ℳ'_3}\) up to isomorphism,
+			\end{itemize}
+			we have that
+			\setlength{\abovedisplayskip}     {0pt}%
+			\setlength{\belowdisplayskip}     {0pt}%
+			\setlength{\abovedisplayshortskip}{0pt}%
+			\setlength{\belowdisplayshortskip}{0pt}%
+			\[
+				\lklhd{c}{⟦ℳ_{i-1}⟧}
+				≤ \lklhd{c}{⟦ℳ_i⟧}
+				\text{.}
+			\]
+		\end{block}
+	\end{overprint}
+\end{standaloneframe}
+\end{document}

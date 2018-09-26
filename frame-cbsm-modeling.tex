@@ -1,0 +1,149 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+%         1 2 3 4 5 6 7 8 9 0 1 2
+\timeline{- + - - - - -}{tlCanonical}
+\timeline{- - + - - - -}{tlThCanonicalMerges}
+\timeline{- - - + + + +}{tlAssA}
+\timeline{- - - - + + +}{tlAssB}
+\timeline{- - - - - + +}{tlAssC}
+\timeline{- - + + - - -}{tlCanonicalMerges}
+\timeline{- - - - - - +}{tlAlgorithm}
+\begin{standaloneframe}[t]{\jobname}
+	\centering%
+	\begin{columns}[t]
+	\column{0.25\linewidth}
+		\textbf{\usebeamercolor*[fg]{description item}Input:} corpus \(c\)
+	\column{0.75\linewidth}
+		\hfill
+		\llap{\textbf{\usebeamercolor*[fg]{description item}Output: }}%
+		\(ℳ_n,\ ℳ_{n-1},\ …,\ ℳ_2,\ ℳ_1\)
+		\hfill\null
+		\[
+			ℳ_i = \argmax_{ℳ ∈ \symbf{M\/odel}_i} \lklhd{c}{⟦ℳ⟧}
+		\]
+		\[
+			\symbf{M\/odel}_i = \text{set of all pta\s with at most \(i\) states}
+		\]
+	\end{columns}
+	\vfill
+	\only<\tlCanonical>{%
+		\begin{block}{canonical tree automaton}
+			\vspace{0.25em}
+			\begin{tikzpicture}
+			[ anchor = base
+			, level distance = 3em
+			, node distance = 0.5em
+			, sibling distance = 2em
+			, tri/.style =
+				{ inner sep = 0.12em
+				, outer sep = 0
+				, shape border rotate = 90
+				, isosceles triangle
+				, isosceles triangle apex angle = 60
+				, draw = black
+				}
+			]
+				\node (t) at (0, -4em) {\(σ\)}
+					child { node[tri] {\(t_1\)} edge from parent[child anchor = apex] }
+					child { node {\(\dots\)} edge from parent[draw = none] }
+					child { node[tri] {\(t_k\)} edge from parent[child anchor = apex] };
+				\draw (t-1.right corner) -- (t-3.left corner);
+				\draw (t-1.left corner)
+					-- ++(-1em, 0) coordinate (left)
+					-- (0.5em, 0) coordinate (top)
+					-- ($(t-3.right corner) + (2em, 0)$) coordinate (right)
+					-- (t-3.right corner);
+				\draw[decorate, decoration = {snake, amplitude = 0.05em, segment length = 1em}]
+					(t) .. controls ++(0, 1em) and ++(0, -1em) .. (0.5em, 0);
+
+
+				% draw subsequent tree triangles
+				\coordinate (s) at (0, 0);
+				\foreach \s in {1, 2, ..., 4}
+					\draw
+						coordinate (sOld) at (s)
+						coordinate (s) at (\s*0.5em, \s*0.125em)
+						(intersection cs: first line = {([shift = {(sOld)}]top) -- ([shift = {(sOld)}]right)}
+										, second line = {([shift = {(s)}]top)    -- ([shift = {(s)}]left)})
+						-- ([shift = {(s)}]top)
+						-- ([shift = {(s)}]right)
+						-- (intersection cs: first line = {([shift = {(sOld)}]top) -- ([shift = {(sOld)}]right)}
+											, second line = {([shift = {(s)}]right)  -- ([shift = {(s)}]left)});
+
+
+				\matrix[draw = nt, edge from parent/.style = {draw = black}, rounded corners, cells = {rounded corners = 0}] (lhs) at (11.9em, -2em) {
+					\node (t) {\(σ\)}
+						child { node[tri] {\(t_1\)} edge from parent[child anchor = apex]}
+						child {node {\(\dots\)} edge from parent[draw = none]}
+						child { node[tri] {\(t_k\)} edge from parent[child anchor = apex]};
+				\\
+				};
+				\node[right = 0 of lhs, inner sep = 0] (arr) {\({} → σ\Big(\)};
+				\matrix[base right = 0 of arr, draw = nt, edge from parent/.style = {draw = black}, rounded corners, cells = {rounded corners = 0}]
+					(t1) {\node[tri] {\(t_1\)};\\};
+				\node[base right = 0 of t1, inner sep = 0] (dots) {\({}, \dots,{}\)};
+				\matrix[base right = 0 of dots, draw = nt, edge from parent/.style = {draw = black}, rounded corners, cells = {rounded corners = 0}]
+					(tk) {\node[tri] {\(t_k\)};\\};
+				\node[base right = 0 of tk, inner sep = 0] {\(\Big)\)};
+
+				\node[left = of lhs] {\(⟹\)};
+			\end{tikzpicture}
+		\end{block}
+	}%
+	\only<\tlThCanonicalMerges,\tlAssA,\tlAssB,\tlAssC>{%
+		\begin{overprint}
+		\onslide<\tlThCanonicalMerges>
+			\begin{block}{Theorem \hfill [TD]}
+				\it
+				Let \(C\) be a finite, non-empty set of trees, and \(\mathcal{A}_C\) the canonical ta of \(C\).
+
+				For every \(C\)-restricted, bottom-up deterministic ta \(\mathcal{A}\) such that \(C ⊆ ⟦\mathcal{A}⟧\) there is an \(\mathcal{A}_C\)-merger \(π\) such that
+				\setlength{\abovedisplayskip}     {0.5em}%
+				\setlength{\belowdisplayskip}     {0pt}%
+				\[
+					\mathcal{A} = π(\mathcal{A}_C)
+					\text{.}
+				\]
+			\end{block}
+		\onslide<\tlAssA,\tlAssB,\tlAssC>
+			\vspace{1em}
+			\begin{description}[Assumption 3]
+			\item<\tlAssA>[Assumption 1]
+				The pta\s are bottom-up deterministic.
+			\item<\tlAssB>[Assumption 2]
+				We can merge greedily.
+			\item<\tlAssC>[Assumption 3]
+				Merging a pta that has optimal weights cannot lead to a better likelihood if the result is bottom-up deterministic.
+			\end{description}
+		\end{overprint}
+		\vspace{5.25em}
+		\hfill%
+		\smash{\alt<\tlAlgorithm>{%
+			\footnotesize\input{tikz-algorithm-cbsm.tex}
+		}{%
+			\begin{tikzpicture}[every node/.style = tight]
+				\matrix[ampersand replacement = \&, column sep = 3em] {
+					\node (n)    {\strut\(ℳ_n\)};
+				\&	\node (n-1)  {\strut\(ℳ_{n-1}\)};
+				\&	\node (dots) {\strut\quad\(…\)\quad\null};
+				\&	\node (2)    {\strut\(ℳ_2\)};
+				\&	\node (1)    {\strut\(ℳ_1\)};
+				\\};
+				\visible<\tlCanonicalMerges>{
+					\draw[->] (n.north east) to[bend left = 15] (n-1.north west);
+					\draw[->] (n.north east) to[bend left = 15] (2.north west);
+					\draw[->] (n.north east) to[bend left = 15] node[above] {merge} (1.north west);
+				}
+				\visible<\tlAssB>{
+					\draw[->] (n.north east)    to[bend left = 15] node[above] {merge} (n-1.north west);
+					\draw[->] (n-1.north east)  to[bend left = 15] node[above] {merge} (dots.north west);
+					\draw[->] (dots.north east) to[bend left = 15] node[above] {merge} (2.north west);
+					\draw[->] (2.north east)    to[bend left = 15] node[above] {merge} (1.north west);
+				}
+			\end{tikzpicture}%
+		}}%
+		\hfill\null%
+	}%
+\end{standaloneframe}
+\end{document}

@@ -1,0 +1,443 @@
+\documentclass{beamer}
+
+\input{preamble.tex}
+
+% \includeonlyframes{current}
+% [label=current]
+
+
+\begin{document}
+
+\begin{frame}[plain]
+	\maketitle
+\end{frame}
+
+
+\section{Natural Language Processing}
+
+\begin{frame}{\secname}
+	\input{frame-nlp.tex}
+\end{frame}
+
+
+\section{Motivation}
+
+\begin{frame}{\secname}
+	\begin{columns}
+	\column{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}[anchor=base, level distance=2.5em, level 1/.style={sibling distance=6em}, level 2/.style={sibling distance=4em}]
+			\node at (9em, 7em)  {S}
+				child { node {NP}
+					child { node {NNP}
+						child { node {John}
+						}
+					}
+				}
+				child { node {VP}
+					child { node {VPZ}
+						child { node {loves}
+						}
+					}
+					child { node {NP}
+						child { node {NNP}
+							child { node {Mary}
+							}
+						}
+					}
+				};
+		\end{tikzpicture}
+	\column{0.45\textwidth}
+		\begin{itemize}
+			\item[S] simple declarative clause
+			\item[NP] noun phrase
+			\item[VP] verb phrase
+			\item[NNP] proper noun, singular
+			\item[VPZ] verb, present tense, 3rd person singular
+		\end{itemize}
+	\end{columns}
+
+	\begin{block}{examples for treebanks/tree corpora}
+		\begin{description}[Penn Treebank]
+		\item [Penn Treebank]
+			50,000 English trees based on Wall Street Journal
+		\item[TIGER]
+			50,000 German trees based on Frankfurter Rundschau
+		\end{description}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{\secname{}}
+	\begin{center}
+		\input{figure-overfitting-tikz.tex}
+	\end{center}
+	\begin{overprint}
+	\onslide<5>
+		\[
+			\newcommand{\snaketree}
+				{\tikz[baseline=0]{\draw[decoration={snake, amplitude=0.1em, segment length=0.4em}] decorate {(0, 0) -- ++(2em, 0)} -- ++(-1em, 1.5em) -- cycle;}}
+			\operatorname{parse}(\tikz[baseline=0]{\draw[decorate, decoration={snake, amplitude=0.1em, segment length=0.4em}] (0, 0) -- ++(2em, 0);})
+			= \argmax_{\snaketree}
+			P(\snaketree)
+		\]
+	\onslide<6->
+		\begin{center}
+			We will use weighted tree automata.
+		\end{center}
+	\end{overprint}
+\end{frame}
+
+
+\section{Outline}
+
+\begin{frame}<1-3>[label=toc]{Outline}
+	\input{frame-toc.tex}
+\end{frame}
+
+
+\section{Training}
+
+\begin{frame}[t]{\secname}{}
+	\centering
+	\input{frame-training.tex}
+\end{frame}
+
+
+% \section{Literature}
+%
+% \begin{frame}{\secname{}}
+% 	\printfullcite{2006PetrovBarrettThibauxKlein}
+% 	\printfullcite{2001CarrascoOncinaCalera-Rubio}
+% \end{frame}
+
+
+\againframe<4>{toc}
+
+
+% \section{(Weighted) Tree automata ((w)ta)}
+%
+% \begin{frame}{\secname}
+% 	\input{frame-ta.tex}
+% \end{frame}
+
+\section{Automata}
+
+\begin{frame}<-7>[t, label = frame:automata]{\secname}
+	\input{frame-automata.tex}
+\end{frame}
+
+
+\section{Tree Automata (ta)}
+
+\againframe<8-11>[t]{frame:automata}
+
+
+\section{Weighted Tree Automata (wta)}
+
+\againframe<12-14>[t]{frame:automata}
+
+
+\section{Read-Off}
+
+\begin{frame}{\secname}
+	\centering
+	\input{frame-readoff.tex}
+\end{frame}
+
+
+\iffalse
+\section{Expectation Maximization Algorithm (EM Algorithm)}
+
+\begin{frame}{\secname}
+	\centering
+	\input{frame-em.tex}
+\end{frame}
+\fi
+
+
+\againframe<5>{toc}
+
+
+\section{State Splitting and Merging Algorithm}
+
+\begin{frame}<1-2>[label=frame:algorithm-split-merge]{\secname}
+	\input{frame-algorithm-split-merge.tex}
+\end{frame}
+
+
+\section{State Splitting and Merging Algorithm – Example}
+
+\begin{frame}
+	\input{frame-example-split-merge.tex}
+\end{frame}
+
+
+\section{State Splitting and Merging Algorithm – Main Result}
+
+\againframe<3>{frame:algorithm-split-merge}
+
+
+\iffalse
+\section{State Splitting and Merging Algorithm – Results}
+
+\begin{frame}{\secname}
+	\input{frame-stspl-findings.tex}
+\end{frame}
+\fi
+
+
+\iffalse
+\section{Open Questions}
+
+\begin{frame}{\secname}
+	\setbeamercovered{transparent}
+	\begin{itemize}[<+->]
+	\item
+		What happens to the corpus’ likelihood while merging?
+	\item
+		Is the EM training after merging really needed?
+	%\item
+	%	When do we stop the state splitting and merging algorithm? Is cross-validation the best we can do?
+	\item
+		How do we choose the free parameters ($μ$, $λ$)?
+	\item
+		Can we avoid merging by cleverly splitting only selected states?
+	\end{itemize}
+\end{frame}
+\fi
+
+
+\section{State Splitting and Merging Algorithm – Revisited}
+
+\againframe<4-6>{frame:algorithm-split-merge}
+
+
+\againframe<6>{toc}
+
+
+\section{Count-Based State Merging Algorithm}
+
+\begin{frame}[t]{\secname}{}
+	\centering
+	\input{frame-cbsm-modeling.tex}
+\end{frame}
+
+
+\subsection{Experiments}
+
+\begin{frame}[t]{\secname{} – \subsecname}{}
+	\centering
+	\input{frame-cbsm-experiments-penn.tex}
+\end{frame}
+
+
+\iffalse
+\section{Bottlenecks and Open Problems}
+
+\begin{frame}{\secname}
+	%\begin{block}{what we have seen}
+	%	\begin{itemize}
+	%	\item
+	%		merging for (p)rtg
+	%	\item
+	%		count-based state merging algorithm:
+	%		\\ abstracting away from a corpus in small steps
+	%	\item
+	%		bottom-up determinism simplifies the calculations
+	%	\end{itemize}
+	%\end{block}
+	%\pause
+	\begin{block}{}%{bottlenecks/problems}
+		\begin{itemize}
+		\item
+			finding the best merger
+		\item
+			saturating mergers until they preserve determinism
+		\item
+			heuristics cannot distinguish states with same count
+		\item
+			Is bottom-up determinism too restrictive?
+		\end{itemize}
+	\end{block}
+\end{frame}
+\fi
+
+
+\againframe<7>{toc}
+
+
+\section{Binarization – Motivation}
+
+\begin{frame}{\secname}
+	\input{frame-binarization-motivation.tex}
+\end{frame}
+
+
+\section{Binarization}
+
+\begin{frame}{\secname}
+	\input{frame-binarization-left-branching.tex}
+\end{frame}
+
+
+\section{Binarization – Results}
+
+\begin{frame}[t]{\secname}
+	\centering
+	\input{frame-binarization-results.tex}
+\end{frame}
+
+
+\iffalse
+\section{Conclusion}
+
+\begin{frame}{\secname}
+	\input{frame-conclusion.tex}
+\end{frame}
+\fi
+
+
+\section{Publications}
+
+\begin{frame}{\secname}
+	\input{frame-publications.tex}
+\end{frame}
+
+
+\section{Thank You}
+
+\begin{frame}
+	\centering
+	%Thank you for your attention.
+	\input{frame-thank-you.tex}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{References}
+
+\begin{frame}{\secname}
+	\printbibliography
+\end{frame}
+
+
+\section{I see the man with the telescope.}
+
+\begin{frame}{\secname}
+	\centering
+	\input{frame-telescope.tex}
+\end{frame}
+
+
+\section{State Splitting and Merging Algorithm – Details}
+
+\againframe<7>{frame:algorithm-split-merge}
+
+\begin{frame}{\secname}
+	\centering
+	\input{frame-algorithm-split-merge-details.tex}
+\end{frame}
+
+
+\section{Some Numbers}
+
+\begin{frame}{\secname}
+	\input{frame-numbers.tex}
+\end{frame}
+
+
+\section{Canonical Tree Automaton}
+
+\begin{frame}{\secname}
+	\centering%
+	\input{frame-canonical-rule.tex}
+\end{frame}
+
+
+\begin{frame}<-3>[label=frame:ta]{\secname}
+	\input{frame-ta-new.tex}
+\end{frame}
+
+
+\section{Merging}
+
+\againframe<4-5,17->{frame:ta}
+
+
+\begin{frame}<1>[label=frame:weighted]{\secname}
+	\input{frame-wta-2.tex}
+\end{frame}
+
+
+\section{Merging and mle}
+
+\againframe<2->{frame:weighted}
+
+
+\section{Count-Based State Merging Algorithm}
+
+\begin{frame}{\secname}
+	\input{frame-algorithm-cbsm.tex}
+\end{frame}
+
+
+\section{Choosing the best Merger}
+
+\begin{frame}{\secname}
+	\input{frame-best-merger.tex}
+\end{frame}
+
+\begin{frame}{\secname}
+	\begin{center}
+		\input{figure-heuristics-tikz.tex}
+	\end{center}
+\end{frame}
+
+
+\section{Count-Based State Merging Algorithm – Experiments 2}
+
+\begin{frame}{\secname}{}
+	\centering
+	\input{frame-cbsm-experiments-artificial.tex}
+\end{frame}
+
+
+\section{Tree Automata (ta) – Revisited}
+
+\againframe<15>[t]{frame:automata}
+
+
+\section{Weighted Unranked Tree Automata (wuta)}
+
+\againframe<16->[t]{frame:automata}
+
+\iffalse
+\begin{frame}{\secname}
+	\centering
+	\input{frame-wuta.tex}
+\end{frame}
+\fi
+
+
+\section{Right-Branching Binarization}
+
+\begin{frame}{\secname}
+	\input{frame-binarization-right.tex}
+\end{frame}
+
+
+\section{Extension Encoding}
+
+\begin{frame}{\secname}
+	\input{frame-extension-encoding.tex}
+\end{frame}
+
+
+\end{document}
+
+% kate: default-dictionary en

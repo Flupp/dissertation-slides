@@ -1,0 +1,38 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\title{\jobname}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\setlength{\topsep}{-\parskip}%
+	\setlength{\partopsep}{0pt}%
+	\begin{lemma}[{{\small proper splitting preserves weights of trees}}]\label{lemma:proper-split}
+		\begin{tabbing}
+			\textbf{let} \= $ℳ$, $ℳ'$ be semi-probabilistic wta over $\varSigma$,
+		%\\\>
+			$\pi$ be a $ℳ$-splitter;
+		\\
+			\textbf{if} $ℳ'$ is a proper $\pi$-split of $ℳ$, \textbf{then} $\forall t \in \trees{\varSigma}\colon ⟦ℳ⟧(t) = ⟦ℳ'⟧(t)$
+		\end{tabbing}
+	\end{lemma}
+	\begin{lemma}[{{\small merging preserves semi-probabilistic}}]
+		\begin{tabbing}
+			\textbf{let} \= $ℳ'$ be a semi-probabilistic wta,
+		\\\>
+			$\pi$ be a $ℳ'$-merger,
+		\\\>
+			$\lambda$ be a $\pi$-distributor;
+		\\
+			\textbf{then} $\mrg_\pi^\lambda(ℳ')$ is semi-probabilistic
+		\end{tabbing}
+	\end{lemma}
+	\begin{lemma}[{{\small composition of merges}}]
+		\begin{tabbing}
+			$\mrg_{\pi_2}^{\lambda_2}(\mrg_{\pi_1}^{\lambda_1}(ℳ)) = \mrg_{\pi}^\lambda(ℳ)$,
+		\\
+			\quad \textbf{where} \= $\pi = \pi_2 \circ \pi_1$,
+		\\
+			\> $\lambda(q) = \lambda_1(q) \cdot \lambda_2(\pi_1(q))$ for every $q \in Q$
+		\end{tabbing}
+	\end{lemma}
+\end{standaloneframe}
+\end{document}

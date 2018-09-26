@@ -1,0 +1,33 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\title{\jobname}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\begin{algorithmic}[1]
+		\Require corpus \(c\) over \(\trees{Σ}\)
+		\Ensure sequence of bottom-up deterministic pta \(ℳ_0, …, ℳ_n\), \(n ∈ ℕ\)
+		\State \(ℳ_0 = (\mathscr{A}_0, ι_0, ρ_0) \gets \text{canonical pta of \(c\)}\)
+		\State \(i \gets 0\)
+		\While{there exists a non-trivial \(\mathscr{A}_i\)-merger}
+			\State
+				\(π \gets \Call{bestMerger}{\mathscr{A}_i, c}\)
+			\State
+				\(i \gets i + 1\)
+			\State
+				\(\mathscr{A}_i \gets π(\mathscr{A}_{i-1})\)
+			\State
+				\(ℳ_i \gets \mle[\mathscr{A}_i]{c}\)
+		\EndWhile
+	\end{algorithmic}
+	\begin{overprint}
+	\onslide<2>
+		\begin{center}
+			\emph{Note:} \(\mathcal{L}(\mathscr{A}_0) \subseteq \mathcal{L}(\mathscr{A}_1) \subseteq \mathcal{L}(\mathscr{A}_2) \subseteq \dots\)
+		\end{center}
+	\onslide<3>
+		\begin{block}{compare with}
+			\printfullcite{2001CarrascoOncinaCalera-Rubio}
+		\end{block}
+	\end{overprint}
+\end{standaloneframe}
+\end{document}

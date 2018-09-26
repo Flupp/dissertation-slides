@@ -1,0 +1,668 @@
+\usefonttheme{professionalfonts}
+
+% LuaLaTeX specific packages
+\usepackage{fontspec}
+	\defaultfontfeatures{Ligatures=TeX}
+\usepackage{polyglossia}
+	\setdefaultlanguage{english}
+\usepackage{amsmath}  % has to be loaded before unicode-math
+\usepackage[math-style=ISO]{unicode-math}
+	\setmathfont{Latin Modern Math}
+% 	\setmathfont[range={\mathcal,\mathbfcal},StylisticSet=1]{xits-math.otf}
+% 	\setmathfont[range={"029F5}]{XITS Math}  % ⧵
+% 	\setmathfont[range={\mathscr,\mathbfscr},StylisticSet=1]{Latin Modern Math}  % make \mathscr use the correct font
+
+\usepackage[noend]{algpseudocode}
+	\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+	\algrenewcommand\algorithmicensure{\textbf{Output:}}
+\usepackage[backend=biber, maxbibnames=42, maxcitenames=42, sorting=ynt, style=authoryear]{biblatex}
+\usepackage{csquotes}
+\usepackage{mathtools}
+\usepackage{media9}
+\usepackage{scalerel}
+\usepackage{standalone}
+\usepackage{tikz}
+	\usetikzlibrary{arrows.meta}
+	\usetikzlibrary{backgrounds}
+	\usetikzlibrary{calc}
+	\usetikzlibrary{decorations}
+	\usetikzlibrary{decorations.pathmorphing}
+	\usetikzlibrary{decorations.pathreplacing}
+	\usetikzlibrary{fadings}
+	\usetikzlibrary{fit}
+	\usetikzlibrary{graphs}
+	\usetikzlibrary{graphdrawing}
+	\usetikzlibrary{intersections}
+	\usetikzlibrary{positioning}
+	\usetikzlibrary{quotes}
+	\usetikzlibrary{shadows.blur}
+	\usetikzlibrary{shapes.arrows}
+	\usetikzlibrary{shapes.geometric}
+	\usegdlibrary{trees}
+\usepackage{xifthen}
+\usepackage{xspace}
+
+\usepackage{pgfplots}
+	\pgfplotsset
+		{ compat = 1.15
+		, /pgf/number format/1000 sep = {\,}
+		, /pgf/number format/assume math mode = true
+		, every axis plot/.append style =
+			{ mark options = {fill opacity = 0.25}
+			}
+		}
+	\usepgfplotslibrary{groupplots}
+\usepackage{pgfplotstable}
+
+\hypersetup
+	{ bookmarksopen
+	, pdflang = en
+	, unicode
+	}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% always show bad boxes
+%\overfullrule=1em
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% biblatex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addbibresource{slides-dissertation-defense.bib}
+% \renewcommand*{\finalnamedelim}{\addcomma\space}
+% \setlength{\bibitemsep}{1em}
+% 
+\AtEveryBibitem{% Clean up the bibtex rather than editing it
+ \clearlist{address}
+ \clearfield{date}
+ \clearfield{eprint}
+ \clearfield{isbn}
+ \clearfield{issn}
+ \clearlist{language}
+ \clearlist{location}
+ \clearfield{month}
+ \clearfield{series}
+%  \clearfield{url}
+%  \clearfield{doi}
+ \clearfield{organization}
+
+%  \ifentrytype{book}{}{% Remove stuff except for books
+%   \clearfield{booktitle}
+%   \clearfield{pages}
+  \clearlist{publisher}
+  \clearname{editor}
+%  }
+}
+% do not print url if doi is present
+% http://tex.stackexchange.com/questions/154864/biblatex-use-doi-only-if-there-is-no-url
+\DeclareSourcemap{
+	\maps[datatype=bibtex]{
+		\map{
+			\step[fieldsource=doi,final]
+			\step[fieldset=url,null]
+}	}	}
+%
+% remove qoutes around titles
+\DeclareFieldFormat
+	[article,inbook,incollection,inproceedings,patent,thesis,unpublished]
+	{title}{#1\isdot}
+% 
+% \DeclareFieldFormat{url}{\mkbibacro{URL}\addcolon\addnbspace\url{#1}}
+% 
+% \DeclareNameAlias{sortname}{first-last}
+% 
+\renewbibmacro{in:}{\ifentrytype{article}{}{}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% beamer
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\useoutertheme{infolines}
+\makeatletter
+% based on
+% /usr/share/texmf-dist/tex/latex/beamer/beamerouterthemeinfolines.sty
+\setbeamertemplate{footline}
+{%
+	\leavevmode%
+	\hbox{%
+	\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+		\usebeamerfont{author in head/foot}\insertshortauthor\expandafter\beamer@ifempty\expandafter{\beamer@shortinstitute}{}{~~(\insertshortinstitute)}
+	\end{beamercolorbox}%
+	\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+		\usebeamerfont{title in head/foot}\insertshorttitle
+	\end{beamercolorbox}%
+	\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+		\usebeamerfont{date in head/foot}%
+		\hfill\insertshortdate\hfill\hfill%
+		%\hspace*{2ex}%
+		%\insertshortdate%
+		%\hspace{0pt plus 1 filll}%
+		%(\insertframenumber.\insertoverlaynumber{} / \insertmainframenumber)%
+		%\hspace{0pt plus 1 filll}%
+		\phantom{000}\llap{\insertpagenumber} / \insertpresentationendpage%
+		\hspace*{2ex}%
+	\end{beamercolorbox}}%
+	\vskip0pt%
+}
+\makeatother
+\useinnertheme{circles}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{bibliography item}{}
+\setbeamertemplate{headline}[default]
+
+\input{tudcolors.tex}
+\setbeamercolor*{alerted text}{fg=HKS07K100}
+\usecolortheme[named=HKS41K100]{structure}
+
+\setbeamercolor*{palette primary}{use=structure,fg=white,bg=structure.fg}
+\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=structure.fg!80}
+\setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=structure.fg!60}
+\setbeamercolor*{palette quaternary}{fg=white,bg=black}
+
+\setbeamercolor*{sidebar}{use=structure,bg=structure.fg}
+
+\setbeamercolor*{palette sidebar primary}{use=structure,fg=structure.fg!20}
+\setbeamercolor*{palette sidebar secondary}{fg=white}
+\setbeamercolor*{palette sidebar tertiary}{use=structure,fg=structure.fg!40}
+\setbeamercolor*{palette sidebar quaternary}{fg=white}
+
+\setbeamercolor*{titlelike}{parent=palette primary}
+
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+
+\setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=alerted text.fg!75!black}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=example text.fg!75!black}
+
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!10!bg}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg!10!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!10!bg}
+
+% \setbeamertemplate{itemize items}[default]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TikZ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tikzset
+	{ > = Stealth
+	}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% general commands and styles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \delegateStyle and \inheritStyle command
+% usage: \delegateStyle{… \inheritStyle{…} …}
+% example: \(X_{\delegateStyle{\fbox{\inheritStyle{X}}}}\)
+% Save the current style and regain it in the argument.
+% This works both for math and text mode, and can be nested.
+% Acknowledgments: Based on \ThisStyle and \SavedStyle from scalerel package.
+\makeatletter
+\newcommand*{\@inheritStyle@D}[1]{\(\displaystyle      #1\)}
+\newcommand*{\@inheritStyle@T}[1]{\(\textstyle         #1\)}
+\newcommand*{\@inheritStyle@S}[1]{\(\scriptstyle       #1\)}
+\newcommand*{\@inheritStyle@s}[1]{\(\scriptscriptstyle #1\)}
+\newcommand*{\@inheritStyle@t}[1]{#1}
+\newcommand*{\inheritStyle}{\csname @inheritStyle@\@inheritStyleSwitch\endcsname}
+\newcommand*{\delegateStyle}[1]{%
+	\ifmmode%
+		\mathchoice%
+		{\edef\@inheritStyleSwitch{D}#1}%
+		{\edef\@inheritStyleSwitch{T}#1}%
+		{\edef\@inheritStyleSwitch{S}#1}%
+		{\edef\@inheritStyleSwitch{s}#1}%
+	\else%
+		\edef\@inheritStyleSwitch{t}#1%
+	\fi%
+}
+\makeatother
+
+
+% \oalt command
+% requires: \delegateStyle and \inheritStyle command
+% usage: \oalt<…>[…]{…}{…} (cf. \alt)
+% Behaves like \alt, but reserves space according to largest overlays.
+% The optional argument defines the alignment inside the reserved space;
+% it is one of c, l, r, s (cf. \makebox); the default is c.
+\makeatletter
+\newlength{\oalt@dp}
+\newlength{\oalt@ht}
+\newlength{\oalt@wd}
+\newbox{\oalt@a}
+\newbox{\oalt@b}
+\newbox{\oalt@empty}
+\newcommand<>*{\oalt}[3][c]{%
+	\delegateStyle{%
+		% based on \setto… in /usr/share/texmf-dist/tex/latex/base/latex.ltx
+		\setbox\oalt@a\hbox{\inheritStyle{#2}}%
+		\setbox\oalt@b\hbox{\inheritStyle{#3}}%
+		\pgfmathsetlength{\oalt@dp}{max(\dp\oalt@a,\dp\oalt@b)}%
+		\pgfmathsetlength{\oalt@ht}{max(\ht\oalt@a,\ht\oalt@b)}%
+		\pgfmathsetlength{\oalt@wd}{max(\wd\oalt@a,\wd\oalt@b)}%
+		\raisebox{0pt}[\oalt@ht][\oalt@dp]{%
+			\makebox[\oalt@wd][#1]{%
+				\alt#4{\unhbox\oalt@a}{\unhbox\oalt@b}%
+			}%
+		}%
+		\setbox\oalt@a\box\oalt@empty%
+		\setbox\oalt@b\box\oalt@empty%
+	}%
+}
+\makeatother
+
+
+% \otemporal command
+% requires: \delegateStyle and \inheritStyle command
+% usage: \otemporal<…>[…]{…}{…}{…} (cf. \temporal)
+% Behaves like \temporal, but reserves space according to largest overlays.
+% The optional argument defines the alignment inside the reserved space;
+% it is one of c, l, r, s (cf. \makebox); the default is c.
+\makeatletter
+\newlength{\ot@dp}
+\newlength{\ot@ht}
+\newlength{\ot@wd}
+\newbox{\ot@a}
+\newbox{\ot@b}
+\newbox{\ot@c}
+\newbox{\ot@empty}
+\newcommand<>*{\otemporal}[4][c]{%
+	\delegateStyle{%
+		% based on \setto… in /usr/share/texmf-dist/tex/latex/base/latex.ltx
+		\setbox\ot@a\hbox{\inheritStyle{#2}}%
+		\setbox\ot@b\hbox{\inheritStyle{#3}}%
+		\setbox\ot@c\hbox{\inheritStyle{#4}}%
+		\pgfmathsetlength{\ot@dp}{max(\dp\ot@a,\dp\ot@b,\dp\ot@c)}%
+		\pgfmathsetlength{\ot@ht}{max(\ht\ot@a,\ht\ot@b,\ht\ot@c)}%
+		\pgfmathsetlength{\ot@wd}{max(\wd\ot@a,\wd\ot@b,\wd\ot@c)}%
+		\raisebox{0pt}[\ot@ht][\ot@dp]{%
+			\makebox[\ot@wd][#1]{%
+				\temporal#5{\unhbox\ot@a}{\unhbox\ot@b}{\unhbox\ot@c}%
+			}%
+		}%
+		\setbox\ot@a\box\ot@empty%
+		\setbox\ot@b\box\ot@empty%
+		\setbox\ot@c\box\ot@empty%
+	}%
+}
+\makeatother
+
+
+% Resize delimiters like braces, brackets, etc.
+% Parameters: size, left delimiter, formula, right delimiter
+% Example: \delim2({\frac{1}{2}})
+\newcommand*{\delim}[4]{%
+	\ifcase#1%
+		#2#3#4%
+	\or%
+		\bigl#2#3\bigr#4%
+	\or%
+		\Bigl#2#3\Bigr#4%
+	\or%
+		\biggl#2#3\biggr#4%
+	\or%
+		\Biggl#2#3\Biggr#4%
+	\else%
+		\left#2#3\right#4%
+	\fi%
+}
+
+
+% similar to \fullcite, but using the formatting of \printbibliography
+\newcommand*{\printfullcite}[1]{%
+	\begin{refsection}%
+		\nocite{#1}%
+		\DeclareNameAlias{author}{first-last}%
+		\printbibliography[heading = none]%
+	\end{refsection}%
+}
+
+
+\colorlet{light alert}{HKS07K60}
+\tikzset{alert.bg/.style={rounded corners, fill=light alert}}
+\tikzset{every picture/.style={line cap=round, semithick}}
+% http://tex.stackexchange.com/questions/6135/how-to-make-beamer-overlays-with-tikz-node
+\tikzset{onslide/.code args={<#1>#2}{\only<#1>{\pgfkeysalso{#2}}}}
+\tikzset{invisible/.code args={<#1>}{\alt<#1>{\pgfkeysalso{transparent}}{\pgfkeysalso{opaque}}}}
+\tikzset{uncover/.code args={<#1>}{\alt<#1>{\pgfkeysalso{opaque}}{\pgfkeysalso{opacity=0.25}}}}
+\tikzset{visible/.code args={<#1>}{\alt<#1>{\pgfkeysalso{opaque}}{\pgfkeysalso{transparent}}}}
+\tikzset{vuncover/.code args=%
+	{<#1><#2>}%
+	{\alt<#1>%
+		{\alt<#2>%
+			{\pgfkeysalso{opaque}}%
+			{\pgfkeysalso{opacity=0.25}}%
+		}{\pgfkeysalso{transparent}}%
+	}%
+}
+
+\newcommand<%
+	>{\tikzhighlight}[2][]{%
+	\delegateStyle{\alt#3%
+		{\tikz[baseline=0, anchor=base, inner sep=0.2em, text height=, text depth=]{\node[alert.bg, #1]{\inheritStyle{#2}};}}%
+		{\tikz[baseline=0, anchor=base, inner sep=0.2em, text height=, text depth=]{\node[#1, fill=none]{\inheritStyle{#2}};}}%
+	}%
+}
+
+\newcommand{\mathhighlight}{\tikzhighlight}
+
+\newcommand<>{\mhl}[2][]{\mathhighlight#3[inner sep=0.2em, #1]{#2}}
+
+
+\newcommand<>{\inlineblock}[2][]{{%
+	\usebeamercolor*[fg]{block body}%
+	\tikzhighlight#3[fill=block body.bg, #1]{#2}%
+}}
+
+
+% a small letter s for plurals of abbreviations
+\newcommand*{\s}{{\scriptsize s}\xspace}
+
+
+\newcommand<>*{\sout}[2][opacity=0.75, ultra thick]{%
+	\delegateStyle{%
+		\tikz[baseline=0, anchor=base, inner sep=0, outer sep=0]{
+			\useasboundingbox node (n) {\inheritStyle{#2}};
+			\only#3{
+				\node (h) {\inheritStyle{\ifmmode\mathstrut\else\strut\fi}};
+				\draw[#1] (n.west |- {$(h.south)!0.5!(h.north)$}) -- (n.east |- {$(h.south)!0.5!(h.north)$});
+			}
+		}%
+	}%
+}
+
+
+% tight style
+% Sets outer sep to default inner sep and inner sep to 0.
+% Use this style for nodes that are neither drawn nor filled to prevent
+% unwanted growth of the bounding box.
+\tikzset{tight/.style={inner sep=0, outer sep=0.3333em}}
+
+
+% rounded tree edges style
+% usage: rounded tree edges={⟨direction⟩}{⟨looseness⟩}{⟨strength⟩}
+\tikzset{
+	rounded tree edges/.style n args={3}{
+	edge from parent path={
+	let
+		\n{direction}={#1},
+		\n{looseness}={#2},
+		\n{strength}={#3},
+		\p1=(\tikzparentnode),
+		\p2=(\tikzchildnode),
+		\p3=(\n{direction}:1pt),
+		\p4=(\x2 - \x1, \y2 - \y1),
+		\n{dist}={veclen(\p4)},
+		\p4=(\x4 / \n{dist}, \y4 / \n{dist}),
+		\n{angle}={atan2(\y4, \x4)},
+		\n{delta}={Mod(\n{angle} - \n{direction}, 360)},
+		\n{delta}={\n{delta} > 180 ? \n{delta} - 360  : \n{delta}},
+		\n{delta}={\n{delta} >  90 ?  180 - \n{delta} : \n{delta}},
+		\n{delta}={\n{delta} < -90 ? -180 - \n{delta} : \n{delta}}
+	in (\tikzparentnode) .. controls
+		+(    \n{angle}+\n{strength}*\n{delta}:\n{looseness}*0.3915*\n{dist}) and
+		+(180+\n{angle}-\n{strength}*\n{delta}:\n{looseness}*0.3915*\n{dist}) ..
+		(\tikzchildnode)
+	}
+	}
+}
+
+
+% Tear out snippets from PDFs.
+% Usage: \tear[…]{file.pdf}
+% The optional parameter is the same as for \includegraphics.
+% Useful Arguments:
+%   * page=‹pagenumber›
+%   * trim=‹left› ‹bottom› ‹right› ‹top›
+%   * width=0.98\linewidth
+\newcommand*{\tear}[2][]{%
+	\begin{tikzpicture}
+		\node
+			[ blur shadow
+			, clip
+			, decorate
+			, decoration=random steps
+			, draw
+			, inner sep=0
+			, preaction={fill=white}% hide the shadow if paper is transparent
+			] {\includegraphics[#1]{#2}};
+	\end{tikzpicture}%
+}
+
+
+\makeatletter
+\newcommand*{\timeline}[3][0]{%
+	\ifcsname timeline@cmd@#3\endcsname%
+		\@timeline[#1]{#2}{#3}%
+		\PackageWarning{timeline}{redefining timeline \@backslashchar\string#3}%
+	\else%
+		\ifcsname#3\endcsname%
+			\errmessage{Command \@backslashchar\string#3 already defined}%
+		\else%
+			\@timeline[#1]{#2}{#3}%
+		\fi%
+	\fi%
+}%
+\newcommand*{\@timeline}[3][0]{%
+	% mark command as timeline command – they can be overwritten
+	\expandafter\def\csname timeline@cmd@#3\endcsname{}%
+	\setcounter{@timeline}{#1}%
+	\def\timeline@cmd{#3}%
+	\timeline@reset%
+	\timeline@append{0}%
+	\@tfor\timeline@next:=#2\do{%
+		\if\timeline@next+%
+			\stepcounter{@timeline}%
+			\timeline@append{,\the@timeline}%
+		\else\if\timeline@next-%
+			\stepcounter{@timeline}%
+		\else%
+			%\timeline@append{\timeline@next}%
+			\GenericError{}{\protect\timeline: ignoring unknown character: \timeline@next}%
+		\fi\fi%
+	}%
+}%
+% \newcommand*{\tl}[1]{%
+% 	\ifcsname timeline@cmd@#1\endcsname%
+% 		\csname timeline@cmd@#1\endcsname%
+% 	\else%
+% 		0%
+% 		%\GenericError{}{\protect\tl: timeline not defined: #1}%
+% 	\fi%
+% }%
+\newcounter{@timeline}%
+\def\timeline@reset{%
+	\expandafter\def\csname\timeline@cmd\endcsname{}%
+}%
+\def\timeline@append#1{%
+	\expandafter\edef\csname\timeline@cmd\endcsname{%
+		\csname\timeline@cmd\endcsname#1%
+	}%
+}%
+\makeatother
+
+
+\newcommand*{\xminus}[1]{%
+	\mathrel{\tikz[baseline={([yshift=-0.25em]n.south)}, inner sep=0, outer sep=0.2em]{%
+		\node (n) {\(\scriptstyle #1\)};
+		\draw (n.south west) -- (n.south east);
+	}}%
+}
+\newcommand*{\tikzrightarrow}[1]{%
+	\mathrel{\tikz[baseline={([yshift=-0.25em]n.south)}, inner sep=0, outer sep=0.2em]{%
+		\node (n) {\(\scriptstyle #1\)};
+		\draw[->, > = Computer Modern Rightarrow, line width = 0.4pt] (n.south west) -- (n.south east);
+	}}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% document specific commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand<>*{\mycite}[1]{\uncover#2{{\color{HKS57K100}[\cite{#1}]}}}
+
+
+\newcommand{\statetree}[1]{
+	\tikz
+	[ anchor=base
+	, baseline=(current bounding box.center)
+	, level distance=2em
+	, sibling distance=2em
+	]{
+		\matrix
+		[ draw=nt
+		, edge from parent/.style={draw=black}
+		, inner sep=0
+		, nodes={inner sep=0.2em, rounded corners=0}
+		, rounded corners
+		] {#1\\}
+	}
+}
+
+
+\newcommand*{\mylargeleaf}[1]{{\LARGE\color{HKS41K70}#1}}
+
+\definecolor{state s}{named}{HKS57K80}
+\definecolor{state t}{named}{HKS41K70}
+\newcommand*{\stateS}[1]{{\color{state s}#1}}
+\newcommand*{\stateT}[1]{{\color{state t}#1}}
+
+\tikzset{
+	subtree/.style =
+		{ fill=lightgray
+		, inner sep=0.02em
+		, isosceles triangle apex angle=60
+		, shape=isosceles triangle
+		, shape border rotate=90
+		}
+	, state/.style = {circle, draw, inner sep=0.1em}
+	, trans/.style = {rectangle, draw}
+}
+
+\newcommand*{\srBool}{\mathbb{B}}
+\newcommand*{\srProb}{ℙ}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% commands for specific notations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator*{\argmax}{argmax}
+
+\newcommand*{\cardinality}[1]{\lvert#1\rvert}
+\newcommand*{\corpussize}[1]{\lvert#1\rvert}
+
+\DeclareMathOperator{\crispOp}{crisp}
+\newcommand*        {\crisp}[2][0]{\crispOp\delim{#1}({#2})}
+
+\DeclareMathOperator{\lhsOp}{lhs}
+\newcommand*{\lhs}[1]{\lhsOp(#1)}
+
+\DeclareMathOperator{\lklhdOp}{L}
+\newcommand*{\lklhd}[2]{\lklhdOp(#1 ∣ #2)}
+
+\DeclareMathOperator{\mleOp}{mle}
+\newcommand*{\mle}[2][]{%
+	\ifthenelse{\isempty{#1}}{%
+		\mleOp(#2)%
+	}{%
+		\mleOp_{#1}(#2)%
+	}%
+}
+
+\DeclareMathOperator{\mrg}{merge}
+
+% CVD: color vision deficiencies
+\definecolor{CVD light red}   {HTML}{FF8080}
+\definecolor{CVD light yellow}{HTML}{FFFF80}
+\definecolor{CVD light green} {HTML}{40FFC0}
+
+\definecolor{nt}{named}{HKS41K70}
+\newcommand*{\nt}[1]{{\color{nt}#1}}
+
+% set of all probability distributions over #1
+\DeclareMathOperator{\pdsOp}{Pd}
+\newcommand*{\pds}[1]{\pdsOp(#1)}
+
+\DeclareMathOperator{\positionsOp}{pos}
+\newcommand*{\positions}[1]{\positionsOp(#1)}
+
+\DeclareMathOperator{\rankOp}{rk}
+\newcommand*{\rank}[1]{\rankOp(#1)}
+
+\DeclareMathOperator{\runsOp}{run}
+\newcommand*{\runs}[2][]{%
+	\ifthenelse%
+		{\isempty{#1}}%
+		{\runsOp(#2)}%
+		{\runsOp_{#1}(#2)}%
+}
+
+\newcommand*{\semantics}[1]{⟦#1⟧}
+
+\DeclareMathOperator{\splt}{split}
+
+\newcommand*{\subtree}[2]{#1|_{#2}}
+
+\DeclareMathOperator{\supportOp}{supp}
+\newcommand*{\support}[1]{\supportOp(#1)}
+
+\newcommand*{\symId}{\textsc{\color{gray}Id}}
+\newcommand*{\symCons}{\textsc{\color{gray}Cons}}
+\newcommand*{\symFlip}{\textsc{\color{gray}Flip}}
+\newcommand*{\symNull}{\textsc{\color{gray}Null}}
+\newcommand*{\symNullR}{\textsc{\color{gray}N\(\overline{\textsc{ull}}\)}}
+\newcommand*{\symSnoc}{\textsc{\color{gray}Snoc}}
+
+\newcommand*{\transWTA}[4][]{#3 \xrightarrow{#1} #2(#4)}
+
+\DeclareMathOperator{\uniqueRunOp}{r}
+\newcommand*{\uniqueRun}[2][]{%
+	\ifthenelse%
+		{\isempty{#1}}%
+		{\uniqueRunOp^{#2}}%
+		{\uniqueRunOp_{\!#1}^{#2}}%
+}
+
+\DeclareMathOperator{\treesOp}{T}
+\newcommand*{\trees}[2][]{%
+	\ifthenelse%
+		{\isempty{#1}}%
+		{\treesOp_{\!#2}}%
+		{\treesOp_{\!#2}(#1)}%
+}
+\DeclareMathOperator{\treesUOp}{U}
+\newcommand*{\treesU}[2][]{%
+	\ifthenelse%
+		{\isempty{#1}}%
+		{\treesUOp_{#2}}%
+		{\treesUOp_{#2}(#1)}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% metadata
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifstandalonebeamer\else
+	\title[Defense of Dissertation]{A Formal View on Training of Weighted Tree Automata by Likelihood-Driven State Splitting and Merging}
+	\subtitle{Defense of Dissertation}
+\fi
+\author{Toni Dietze}
+\institute[TU Dresden]{%
+	\href{https://www.orchid.inf.tu-dresden.de/index.en/}{Chair for Foundations of Programming}
+\\	\href{https://tu-dresden.de/ing/informatik/thi}{Institute of Theoretical Computer Science}
+\\	\href{https://tu-dresden.de/ing/informatik}{Faculty of Computer Science}
+\\	\href{https://tu-dresden.de/}{Technische Universität Dresden}
+\\	01062 Dresden, Germany
+}
+\date[2018-09-27]{September 27, 2018}

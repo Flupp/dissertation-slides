@@ -1,0 +1,27 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+\begin{algorithmic}[1]
+	\Function{split}{$ℳ$}
+		\State $\pi \gets$ $ℳ$-splitter splitting every state $A$ in $ℳ$ into $A^1$ and $A^2$
+		\State \Return a proper $\pi$-split of $ℳ$
+	\EndFunction
+	\vspace{1em}
+	\Function{merge}{$ℳ'$}
+		\State $\pi \gets \text{identity mapping}$
+		\ForAll{states $A$ s.t.\ $A^1$, $A^2$ in $ℳ'$}
+			\State $\widehat{\pi} \gets \text{identity mapping}$
+			\State $\widehat{\pi}(A^1) \gets A$ and $\widehat{\pi}(A^2) \gets A$
+			\State $\lambda \gets \text{a good $\widehat{\pi}$-distributor}$
+			\If{$\displaystyle\frac{\lklhd{c}{\mrg_{\widehat{\pi}}^\lambda(ℳ')}}{\lklhd{c}{ℳ'}} \geq \mu$}
+				\label{algorithmic:lklhd-ratio}
+				\State $\pi(A^1) \gets A$ and $\pi(A^2) \gets A$
+			\EndIf
+		\EndFor
+		\State $\lambda \gets \text{a good $\pi$-distributor}$
+		\State \Return $\mrg_\pi^\lambda(ℳ')$
+	\EndFunction
+\end{algorithmic}
+\end{standaloneframe}
+\end{document}

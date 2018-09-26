@@ -1,0 +1,31 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\title{\jobname}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\begin{block}{some included grammars of the Berkeley Parser}
+		\begin{center}
+% 			\begin{tabular}{r|rrr}
+% 				grammar & \texttt{arb\_sm5} & \texttt{eng\_sm6} & \texttt{ger\_sm5}
+% 			\\\hline
+% 				binary rules & 897,168 & 1,725,570 & 615,199
+% 			\\
+% 				unary rules & 48,315 & 116,648 & 1,577
+% 			\\
+% 				nullary rules & 2,300,883 & 2,425,059 & 1,495,873
+% 			\\\hline
+% 				sum & 3,246,366 & 4,267,277 & 2,112,649
+% 			\end{tabular}
+			\begin{tabular}{r|rrr|r}
+				grammar & binary rules & unary rules & nullary rules & sum
+			\\\hline
+				\texttt{arb\_sm5} & 897,168 & 48,315 & 2,300,883 & 3,246,366
+			\\
+				\texttt{eng\_sm6} & 1,725,570 & 116,648 & 2,425,059 & 4,267,277
+			\\
+				\texttt{ger\_sm5} & 615,199 & 1,577 & 1,495,873 & 2,112,649
+			\end{tabular}
+		\end{center}
+	\end{block}
+\end{standaloneframe}
+\end{document}

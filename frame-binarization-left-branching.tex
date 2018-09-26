@@ -1,0 +1,69 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\begin{tikzpicture}
+		[ baseline = (base.base)
+		, level distance=2em
+		, level 1/.style={sibling distance=3em}
+		, inner sep = 0
+		, outer sep = 0.25em
+		]
+		% δ(α, γ(α), β)
+		\node {\(σ\)}
+			child {node {\(α\)}
+			}
+			child {node {\(γ\)}
+				child {node {\(α\)}
+				}
+			}
+			child {node (base) {\(β\)}
+			};
+	\end{tikzpicture}
+	\hfill
+	\begin{tikzpicture}[baseline = (base.base)]
+		\node[draw, shape = single arrow] (base) {\strut binarize};
+	\end{tikzpicture}
+	\hfill
+	\begin{tikzpicture}
+		[ baseline = (base.base)
+		, level distance=2em
+		, level 2/.style={sibling distance=7em}
+		, level 4/.style={sibling distance=3em}
+		, inner sep = 0
+		, outer sep = 0.25em
+		]
+		% σ(\symId(\symCons(α(\symId(\symNull)), \symCons(γ(\symId(\symCons(α(\symId(\symNull)),\symNull))),\symCons(β(\symId(\symNull)), \symNull)))))
+		\node {\(σ\)}
+			child {node[gray] {\(\symCons\)}
+				child {node {\(α\)}
+					child {node[gray] (base) {\(\symNull\)}
+					}
+				}
+				child {node[gray] {\(\symCons\)}
+					child {node {\(γ\)}
+						child {node[gray] {\(\symCons\)}
+							child {node {\(α\)}
+								child {node[gray] {\(\symNull\)}
+								}
+							}
+							child {node[gray] {\(\symNull\)}
+							}
+						}
+					}
+					child {node[gray] {\(\symCons\)}
+						child {node {\(β\)}
+							child {node[gray] {\(\symNull\)}
+							}
+						}
+						child {node[gray] {\(\symNull\)}
+						}
+					}
+				}
+			};
+	\end{tikzpicture}
+	\begin{block}<2->{I analyzed three binarization strategies motivated by}
+		\printfullcite{2005MatsuzakiMiyaoTsujii}
+	\end{block}
+\end{standaloneframe}
+\end{document}

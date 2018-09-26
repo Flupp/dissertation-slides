@@ -1,0 +1,50 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+%         1 2 3 4 5 6 7
+\timeline{+ - - - - - -}{tlUncover}
+\timeline{- - + + - - -}{tlTrainingOfWTAs}
+\timeline{- - - - + - -}{tlStateSplittingAndMerging}
+\timeline{- - - - - + -}{tlCountBasedStateMerging}
+\timeline{- - - - - - +}{tlBinarization}
+\begin{standaloneframe}{\jobname}
+	\setbeamercovered{transparent}
+	\begin{columns}
+	\column{0.44\linewidth}
+		\begin{enumerate}
+		\item
+			Introduction
+		\item<\tlUncover>
+			Preliminaries
+		\item<\tlUncover>
+			Language Formalisms
+		\item<1-|alert@\tlTrainingOfWTAs>
+			Training of WTAs
+		\item<1-|alert@\tlStateSplittingAndMerging>
+			State Splitting and Merging
+		\item<1-|alert@\tlCountBasedStateMerging>
+			Count-Based State Merging
+		\item<1-|alert@\tlBinarization>
+			Binarization
+		\end{enumerate}
+	\end{columns}
+	%\only<\tlStateSplittingAndMerging>{%
+	%	\vspace{1em}
+	%	\begin{block}{Chapter~5 rigorously formalizes the approach of}
+	%		\printfullcite{2006PetrovBarrettThibauxKlein}%
+	%	\end{block}
+	%}%
+	\only<\tlCountBasedStateMerging>{%
+		\vspace{1em}
+		\begin{block}{Chapter~6 is a substantially extended version of}
+			\printfullcite{2015DietzeNederhof}%
+		\end{block}
+	}%
+	\only<\tlBinarization>{%
+		\vspace{0.5em}
+		\begin{block}{Chapter~7 is a substantially extended version of}
+			\printfullcite{2016Dietze}%
+		\end{block}
+	}%
+\end{standaloneframe}
+\end{document}

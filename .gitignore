@@ -1,0 +1,7 @@
+/_output/
+/frame-*
+/slides-*
+
+!/frame-*.tex
+!/slides-*.bib
+!/slides-*.tex

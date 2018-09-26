@@ -1,0 +1,31 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\title{\jobname}
+\begin{document}
+\begin{standaloneframe}
+	\centering
+	\begin{tikzpicture}[anchor=base, level sep=1em, tree layout]
+		\node {S}
+			child { node {VP}
+				child { node {VB} child { node {\mylargeleaf{Thank}} } }
+				child { node {NP}
+					child { node {PRP} child { node {\mylargeleaf{you}} } }
+				}
+				child { node {PP}
+					child { node {IN} child { node {\mylargeleaf{for}} } }
+					child { node {NP}
+						child { node {PRP\$} child { node {\mylargeleaf{your}} } }
+						child { node {NN} child { node {\mylargeleaf{attention}} } }
+					}
+				}
+			};
+	\end{tikzpicture}
+\end{standaloneframe}
+\end{document}
+% (ROOT
+%   (S
+%     (VP (VB Thank)
+%       (NP (PRP you))
+%       (PP (IN for)
+%         (NP (PRP$ your) (NN attention))))
+%     (. .)))

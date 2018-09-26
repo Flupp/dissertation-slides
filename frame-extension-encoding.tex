@@ -1,0 +1,133 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\tikzset{mytree/.style=
+		{ anchor=base
+		, baseline=0
+		, every node/.style={minimum width=0.9em, tight}
+		, sibling distance=2em
+		, text depth=0.2em
+		, text height=0.7em
+	}}
+	\begin{columns}[onlytextwidth]
+	\column{0.3\linewidth}\centering
+		unranked tree
+
+		\begin{tikzpicture}[mytree]
+			\node {\(σ\)}
+				child { node {\(α\)}
+				}
+				child { node {\(γ\)}
+					child { node {\(α\)}
+					}
+				}
+				child { node {\(β\)}
+				};
+		\end{tikzpicture}
+		\pause
+	\column{0.7\linewidth}\centering
+		\alt<-.(4)>
+			{binarizing the tree}
+			{extension encoding}
+
+		\begin{tikzpicture}
+		[ mytree
+		, onslide={<.(2)->
+			  level 1/.style={sibling distance=4em}
+			, level 2/.style={sibling distance=4em}
+			, level 3/.style={sibling distance=2em}
+			}
+		]
+			\path (-5.6em, -7.4em) rectangle (2.6em, 0);
+
+			\node<+> {\(σ\)}
+			child { node {\(α\)}
+			}
+			child { node {\(γ\)}
+				child { node {\(α\)}
+				}
+			}
+			child { node {\(β\)}
+			};
+
+			\node<+> {\(\$\)}
+			child { node {\(σ\)}
+				child { node {\(α\)}
+				}
+				child { node {\(γ\)}
+					child { node {\(α\)}
+					}
+				}
+			}
+			child { node {\(β\)}
+			};
+
+			\node<+> {\(\$\)}
+			child { node {\(\$\)}
+				child { node {\(σ\)}
+					child { node {\(α\)}
+					}
+				}
+				child { node {\(γ\)}
+					child { node {\(α\)}
+					}
+				}
+			}
+			child { node {\(β\)}
+			};
+
+			\node<+> {\(\$\)}
+			child { node {\(\$\)}
+				child { node {\(\$\)}
+					child { node {\(σ\)}
+					}
+					child { node {\(α\)}
+					}
+				}
+				child { node {\(γ\)}
+					child { node {\(α\)}
+					}
+				}
+			}
+			child { node {\(β\)}
+			};
+
+			\node<+> {\(\$\)}
+			child { node {\(\$\)}
+				child { node {\(\$\)}
+					child { node {\(σ\)}
+					}
+					child { node {\(α\)}
+					}
+				}
+				child { node {\(\$\)}
+					child { node {\(γ\)}
+					}
+					child { node {\(α\)}
+					}
+				}
+			}
+			child { node {\(β\)}
+			};
+		\end{tikzpicture}
+
+		\mycite<.->{2004CarmeNiehrenTommasi}
+
+% 		% first-child-next-sibling encoding
+% 		\begin{tikzpicture}[mytree, sibling distance=4em]
+% 			\node {\(σ\)}
+% 				child { node {\(α\)}
+% 					child[missing]
+% 					child { node {\(γ\)}
+% 						child { node {\(α\)}
+% 						}
+% 						child { node {\(β\)}
+% 						}
+% 					}
+% 				}
+% 				child[missing];
+% 		\end{tikzpicture}
+	\end{columns}
+\end{standaloneframe}
+\end{document}

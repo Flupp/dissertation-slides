@@ -1,0 +1,51 @@
+\begin{tikzpicture}
+[ tri/.style =
+	{ inner sep=0.12em
+	, shape border rotate=90
+	, isosceles triangle
+	, isosceles triangle apex angle=60
+	, draw
+	} 
+]
+	\matrix[anchor=base, column sep=1em, row sep=3em] (m) {
+		\node[anchor = base east, align = right] {corpus: \\ {\footnotesize(training data)}\phantom{:}};
+	&&	\node[tri, fill = CVD light green ] {B};
+	&	\node[tri, fill = CVD light green ] {C};
+	&&	\node[tri, fill = CVD light green ] {E};
+	\\	\node[anchor=base east] {$\trees{\varSigma}\colon$};
+	&	\node[tri, fill = CVD light red] (A) {A};
+	&	\node[tri, fill = CVD light green ] (B) {B};
+	&	\node[tri, fill = CVD light green ] (C) {C};
+	&	\node[tri, fill = CVD light yellow] (D) {D};
+	&	\node[tri, fill = CVD light green ] (E) {E};
+	&	\node[tri, fill = CVD light red   ] (F) {F};
+	&	\node[tri, fill = CVD light yellow] (G) {G};
+	&	\node {$\dots$};
+	\\	\node[anchor=base east, visible=<2->] {probabilities:};
+	&	\node<4-> (pA) {0};
+	&	\node<2-> (pB) {0.2};
+	&	\node<2-> (pC) {0.1};
+	&	\node<3-> (pD) {0.1};
+	&	\node<2-> (pE) {0.4};
+	&	\node<4-> (pF) {0};
+	&	\node<3-> (pG) {0.1};
+	&	\node<2->  {$\dots$};
+	\\
+	};
+	\begin{scope}
+		[ |->
+		, > = Computer Modern Rightarrow
+		, line width = 0.4pt
+		, shorten < = 0.75em
+		, shorten > = 0.5em
+		, node distance = 4em
+		]
+		\draw<4-> (A) -- (pA);
+		\draw<2-> (B) -- (pB);
+		\draw<2-> (C) -- (pC);
+		\draw<3-> (D) -- (pD);
+		\draw<2-> (E) -- (pE);
+		\draw<4-> (F) -- (pF);
+		\draw<3-> (G) -- (pG);
+	\end{scope}
+\end{tikzpicture}

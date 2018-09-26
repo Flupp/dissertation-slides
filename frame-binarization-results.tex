@@ -1,0 +1,43 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}[t]{\jobname}
+\centering
+\begin{tikzpicture}[ampersand replacement=\&]
+	\matrix[column sep=0em, row sep=1em]{
+		\node (b) {binarization \(h\)};
+	\&
+		\node[subtree, inner sep=0.3em] (t) {\(t\)};
+	\\
+		\node[align=center] (wta) {weighted (\alert{ranked}) \\ tree automaton \(ℳ'\)};
+	\&\&
+		\node[align=center, visible=<2->] (wuta) {weighted \alert{unranked} \\ tree automaton \(ℳ\)};
+	\\\&
+		\node (w) {\(\displaystyle ∑_{t' ∈ h^{-1}(t)} ⟦ℳ'⟧(t') \uncover<2->{= ⟦ℳ⟧(t)}\)};
+	\\};
+
+	\begin{scope}[rounded corners]
+		\draw[->] (t) -- (b);
+		\draw[->] (b) -- (wta);
+		\draw[->] (wta) |- (w.mid west);
+
+		\draw[->, visible=<2->] (t) -| (wuta);
+		\draw[->, visible=<2->] (wuta) |- (w.mid east);
+	\end{scope}
+\end{tikzpicture}%
+\only<3->{%
+	\\[1em]
+	For each of three binarizations \(h\):
+	\begin{block}{Theorem \hfill [TD]}
+		%We show that wsta together with any of the presented binarizations and wuta are equally powerful
+		For every \only<4>{\alert{prob.}\ }wuta \(ℳ\) there is a \only<4>{\alert{prob.}\ }wta \(ℳ'\) and vice versa such that
+		\setlength{\belowdisplayskip}{0pt}%
+		\[
+			⟦ℳ⟧(t) = ∑_{t' ∈ h^{-1}(t)} ⟦ℳ'⟧(t')
+			\qquad
+			\text{for every \(t ∈ \trees{Σ}\).}
+		\]
+	\end{block}
+}%
+\end{standaloneframe}
+\end{document}

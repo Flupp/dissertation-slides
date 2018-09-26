@@ -1,0 +1,167 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+\centering%
+% \frametitle{\temporal<8-9>%
+% 	{Splitting: $\Call{split}{(G_0, p_0)}$}%
+% 	{EM Algorithm: $\Call{EM}{}(\Call{split}{(G_0, p_0)}, c)$}%
+% 	{Merging: $\Call{merge}{(G', p')}$}%
+% 	}%
+\frametitle{\temporal<8-9>%
+	{Splitting}%
+	{EM Algorithm}%
+	{Merging}%
+	}%
+\begin{columns}
+\column{\linewidth}\centering
+\begin{tikzpicture}
+[ ampersand replacement=\&
+, node distance=0.5em
+, cm arrow/.style = {> = Computer Modern Rightarrow, line width = 0.4pt}
+]
+	\node[visible=<1-7>] (splt) {$\splt\colon \nt{S} \mapsto \{\nt{S}\},\ \nt{A} \mapsto \{\nt{A^1}, \nt{A^2}\},\ \nt{B} \mapsto \{\nt{B^1}, \nt{B^2}\}$};
+	\matrix
+	[ anchor=base
+	, column sep=0.7em
+	, row sep=0.1em
+	, below=of splt
+	] (m) {
+		\node[visible=<1-7>, onslide=<3>alert.bg] (S->A-B) {$\nt{S} \tikzrightarrow{1} σ(\nt{A}, \nt{B})$};
+	\&
+		\node[visible=<1-7>, onslide=<2>alert.bg] {$\nt{A} \tikzrightarrow{1} α$};
+	\&
+		\node[visible=<1-7>, onslide=<4>alert.bg] {$\nt{B} \tikzrightarrow{0.5} β(\nt{B})$};
+	\&
+		\node[visible=<1-7>] {$\nt{B} \tikzrightarrow{0.5} β(\nt{A})$};
+	\\
+		\draw[visible=<3-7>, |->, cm arrow] (0, 0) -- ++(0, -3em) node[midway, sloped, above] {$\splt$};
+	\&
+		\draw[visible=<2-7>, |->, cm arrow] (0, 0) -- ++(0, -3em) node[midway, sloped, above] {$\splt$};
+	\&
+		\draw[visible=<4-7>, |->, cm arrow] (0, 0) -- ++(0, -3em) node[midway, sloped, above] {$\splt$};
+	\&
+		\draw[visible=<5-7>, |->, cm arrow] (0, 0) -- ++(0, -3em) node[midway, sloped, above] {$\splt$};
+	\\ \uncover<3->{
+		\node (S->A1-B1) {$\nt{S} \tikzrightarrow{\otemporal<7-8>{0.25}{0.23}{\otemporal<-13>{}{0.49}{1.00}}} σ(\nt{A^{\uncover<-13>{1}}}, \nt{B^1})$};
+	} \& \uncover<2->{
+		\node (A1->) {$\nt{A^{\uncover<-15>{1}}} \tikzrightarrow{1} α$};
+	} \& \uncover<4->{
+		\node[onslide=<9->{opacity=0.25}] (B1->B1) {$\nt{B^1} \tikzrightarrow{\otemporal<7-8>{0.25}{0.24}{0.00}} β(\nt{B^1})$};
+	} \& \uncover<5->{
+		\node (B1->A1) {$\nt{B^1} \tikzrightarrow{\otemporal<7-8>{0.25}{0.28}{\otemporal<-11>{}{0.33}{0.66}}} β(\nt{A^{\uncover<-11>{1}}})$};
+	} \\ \uncover<3-13>{
+		\node (S->A2-B1) {$\nt{S} \tikzrightarrow{\otemporal<7-8>{0.25}{0.26}{0.51}} σ(\nt{A^2}, \nt{B^1})$};
+	} \& \uncover<2-15>{
+		\node (A2->) {$\nt{A^2} \tikzrightarrow{1} α$};
+	} \& \uncover<4->{
+		\node (B1->B2) {$\nt{B^1} \tikzrightarrow{\otemporal<7-8>{0.25}{0.26}{0.33}} β(\nt{B^2})$};
+	} \& \uncover<5-11>{
+		\node (B1->A2) {$\nt{B^1} \tikzrightarrow{\otemporal<7-8>{0.25}{0.22}{0.33}} β(\nt{A^2})$};
+	} \\ \uncover<3->{
+		\node[onslide=<9->{opacity=0.25}] (S->A1-B2) {$\nt{S} \tikzrightarrow{\otemporal<7-8>{0.25}{0.24}{0.00}} σ(\nt{A^{\uncover<-14>{1}}}, \nt{B^2})$};
+	} \&
+	\& \uncover<4->{
+		\node (B2->B1) {$\nt{B^2} \tikzrightarrow{\otemporal<7-8>{0.25}{0.27}{1.00}} β(\nt{B^1})$};
+	} \& \uncover<5->{
+		\node[onslide=<9->{opacity=0.25}] (B2->A1) {$\nt{B^2} \tikzrightarrow{\otemporal<7-8>{0.25}{0.24}{0.00}} β(\nt{A^{\uncover<-12>{1}}})$};
+	} \\ \uncover<3-14>{
+		\node[onslide=<9->{opacity=0.25}] (S->A2-B2) {$\nt{S} \tikzrightarrow{\otemporal<7-8>{0.25}{0.27}{0.00}} σ(\nt{A^2}, \nt{B^2})$};
+	} \&
+	\& \uncover<4->{
+		\node[onslide=<9->{opacity=0.25}] (B2->B2) {$\nt{B^2} \tikzrightarrow{\otemporal<7-8>{0.25}{0.23}{0.00}} β(\nt{B^2})$};
+	} \& \uncover<5-12>{
+		\node[onslide=<9->{opacity=0.25}] (B2->A2) {$\nt{B^2} \tikzrightarrow{\otemporal<7-8>{0.25}{0.26}{0.00}} β(\nt{A^2})$};
+	} \\
+	};
+	\begin{scope}[every node/.style={draw, color=gray, rounded corners, inner sep=-0.1em}]
+		\node<3-7>[fit=(S->A1-B1) (S->A1-B2) (S->A2-B1) (S->A2-B2)] {};
+		\node<2-7>[fit=(A1->)] {};
+		\node<2-7>[fit=(A2->)] {};
+		\node<4-7>[fit=(B1->B1) (B1->B2)] {};
+		\node<4-7>[fit=(B2->B1) (B2->B2)] {};
+		\node<5-7>[fit=(B1->A1) (B1->A2)] {};
+		\node<5-7>[fit=(B2->A1) (B2->A2)] {};
+	\end{scope}
+	%\node[visible=<1-7>, base left=-0.5em of S->A-B] {$(G_0, p_0)\colon$};
+	%\node[visible=<2-8>, above left=-0.2em and -1.5em of S->A1-B1] {$(G_\mathsf{s}, p_\mathsf{s})\colon$};
+	%\node[visible=<9-11>, above left=-0.2em and -1.5em of S->A1-B1] {$(G', p')\colon$};
+	%\node[visible=<16->, above left=-0.2em and -1.5em of S->A1-B1] {$(G_1, p_1)\colon$};
+	\node[visible=<5-7>, below=of m] {$\mathhighlight<5>{\text{weights of trees unchanged}} \uncover<6->{\implies \mathhighlight<6>{\text{likelihood unchanged}}}$};
+	% \lklhd(c \mid (G', p')) = \lklhd(c \mid (G, p))
+	\node[visible=<8-9>, above=-1.5em of m, xshift=-0.5em] {Find weights that maximize the corpus’ likelihood.};
+	\matrix[visible=<8-9>, below=of m, xshift=-0.5em, every node/.style={anchor=base, inner sep=0}] {
+		\node {Likelihood of corpus before EM: $\approx 0.06$};
+	\&
+		\node[visible=<9-9>] {; after EM: $\approx 0.15$};
+	\\
+	};
+
+	\only<10->{
+		\matrix
+		[ every node/.style={anchor=base west, text width=1.25em, align=left}
+		, row sep=-0.85em
+		, column sep=4em
+		, text height=0.75em
+		, text depth=0em
+		, above=-5em of m
+		] (m) {
+			\node (sS) {$\nt{S}$};
+		\&
+			\node (mS) {$\nt{S}$};
+		\\
+			\node {};
+		\\
+			\node (sA1) {$\nt{A^1}$};
+		\\\&
+			\node (mA) {$\nt{A}$};
+		\\
+			\node (sA2) {$\nt{A^2}$};
+		\\
+			\node {};
+		\\
+			\node (sB1) {$\nt{B^1}$};
+		\&
+			\node (mB1) {$\nt{B^1}$};
+		\\
+			\node {};
+		\\
+			\node (sB2) {$\nt{B^2}$};
+		\&
+			\node (mB2) {$\nt{B^2}$};
+		\\
+		};
+		\begin{scope}
+		[ ->
+		, cm arrow
+		, onslide = <2->{|->}
+		, out = 0
+		, in = 180
+		]
+			\draw (sS) to node[visible=<2->, above=-0.2em, text height=0.75em, text depth=0.25em] {$\mrg$} (mS);
+			\draw (sA1) to[in=165] (mA);
+			\draw (sA2) to[in=195] (mA);
+			\draw (sB1) to (mB1);
+			\draw (sB2) to (mB2);
+		\end{scope}
+	}
+
+	\only<11->{
+		\begin{scope}[every node/.style={draw, color=gray, rounded corners, inner sep=-0.1em}, highlight/.style={ultra thick, color=light alert}]
+			\node[fit=(S->A1-B1) (S->A2-B1), onslide=<13>highlight] {};
+			\node[fit=(S->A1-B2) (S->A2-B2), onslide=<14>highlight] {};
+			\node[fit=(A1->) (A2->), onslide=<15>highlight] {};
+			\node[fit=(B1->B1)] {};
+			\node[fit=(B1->B2)] {};
+			\node[fit=(B2->B1)] {};
+			\node[fit=(B2->B2)] {};
+			\node[fit=(B1->A1) (B1->A2), onslide=<11>highlight] {};
+			\node[fit=(B2->A1) (B2->A2), onslide=<12>highlight] {};
+		\end{scope}
+	}
+\only<16>{};
+% \fill[black, opacity=0.2] (current bounding box.north west) rectangle (current bounding box.south east);
+\end{tikzpicture}
+\end{columns}
+\end{standaloneframe}
+\end{document}

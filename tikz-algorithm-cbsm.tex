@@ -1,0 +1,35 @@
+\documentclass[tikz]{standalone}
+\usepackage{luatex85}% workaround problems with standalone
+\usepackage{amsmath}
+\usepackage[colon=literal, math-style=ISO]
+           {unicode-math}
+\usetikzlibrary{positioning}
+\DeclareMathOperator{\mleOp}{mle}
+\begin{document}
+\begin{tikzpicture}
+[ data/.style={align=center, draw, rounded corners}
+, func/.style={align=center, draw}
+, node distance = 1.2em and 3em
+]
+
+\node (merge) [func] {\strut find and apply best merger};
+
+\node (c)     [data, above = of merge.north east, anchor = south east] {corpus};
+\node (mle)   [func, above = of c] {\strut \(\mleOp\)};
+\node (Mi)    [data, right = of mle] {\strut \(ℳ_i\)};
+
+\node (Ai)    [data, anchor = west] at (merge.west |- mle) {\strut \(\mathcal{A}_i\)};
+
+\draw[<-] (Ai) -- ++(-5em, 0) node[midway, above] {\(i ≔ 0\)};
+\begin{scope}[->, line cap = rect, rounded corners]
+	\draw (Ai)  -- (mle);
+	\draw (Ai)  -| (merge);
+	\draw (mle) -- (Mi);
+
+	\draw (Ai |- merge.north) -- (Ai) node[midway, left] {\(i ≔ i + 1\)};
+
+	\draw (c) to[bend left=20] (mle);
+	\draw (c) to[bend left=20] (c |- merge.north);
+\end{scope}
+\end{tikzpicture}
+\end{document}

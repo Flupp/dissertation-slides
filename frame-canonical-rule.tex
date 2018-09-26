@@ -1,0 +1,71 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+\centering%
+\begin{tikzpicture}
+[ anchor=base
+, level distance=3em
+, node distance=0.5em
+, sibling distance=2em
+, tri/.style =
+	{ inner sep=0.12em
+	, outer sep=0
+	, shape border rotate=90
+	, isosceles triangle
+	, isosceles triangle apex angle=60
+	, draw=black
+	}
+]
+\node (t) at (0, -4em) {\(σ\)}
+	child { node[tri] {\(t_1\)} edge from parent[child anchor=apex]}
+	child {node {\(\dots\)} edge from parent[draw=none]}
+	child { node[tri] {\(t_k\)} edge from parent[child anchor=apex]};
+\draw (t-1.right corner) -- (t-3.left corner);
+\draw (t-1.left corner)
+	-- ++(-1em, 0) coordinate (left)
+	-- (0.5em, 0) coordinate (top)
+	-- ($(t-3.right corner) + (2em, 0)$) coordinate (right)
+	-- (t-3.right corner);
+\draw[decorate, decoration={snake, amplitude=0.05em, segment length=1em}]
+	(t) .. controls ++(0, 1em) and ++(0, -1em) .. (0.5em, 0);
+
+
+% draw subsequent tree triangles
+\coordinate (s) at (0, 0);
+\foreach \s in {1, 2, ..., 4}
+	\draw
+		coordinate (sOld) at (s)
+		coordinate (s) at (\s*0.5em, \s*0.125em)
+		(intersection cs: first line = {([shift={(sOld)}]top) -- ([shift={(sOld)}]right)}
+						, second line = {([shift={(s)}]top)    -- ([shift={(s)}]left)})
+		-- ([shift={(s)}]top)
+		-- ([shift={(s)}]right)
+		-- (intersection cs: first line = {([shift={(sOld)}]top) -- ([shift={(sOld)}]right)}
+							, second line = {([shift={(s)}]right)  -- ([shift={(s)}]left)});
+
+
+\node at (0, -9em) {\(\Downarrow\)};
+
+
+\matrix[draw=nt, edge from parent/.style={draw=black}, rounded corners, cells={rounded corners=0}] (lhs) at (-8em, -11em) {
+	\node (t) {\(σ\)}
+		child { node[tri] {\(t_1\)} edge from parent[child anchor=apex]}
+		child {node {\(\dots\)} edge from parent[draw=none]}
+		child { node[tri] {\(t_k\)} edge from parent[child anchor=apex]};
+\\
+};
+\node[right=0 of lhs] (arr) {\({} → σ\Big(\)};
+\matrix[base right=of arr, draw=nt, edge from parent/.style={draw=black}, rounded corners, cells={rounded corners=0}]
+	(t1) {\node[tri] {\(t_1\)};\\};
+\node[base right=of t1] (dots) {\(, \dots,\)};
+\matrix[base right=of dots, draw=nt, edge from parent/.style={draw=black}, rounded corners, cells={rounded corners=0}]
+	(tk) {\node[tri] {\(t_k\)};\\};
+\node[base right=of tk] {\(\Big)\)};
+\end{tikzpicture}
+\pause
+\begin{center}
+	result is bottom-up deterministic
+\end{center}
+\end{standaloneframe}
+\end{document}

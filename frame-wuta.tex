@@ -1,0 +1,104 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\only<.(4)>{\transfade}
+	\begin{columns}
+	\column{0.5\linewidth}\centering
+		\setcounter{beamerpauses}{2}
+		\begin{tikzpicture}
+			[ inner sep=0.25em
+			, rounded tree edges={-90}{1}{0.5}
+			, tight
+			, level distance=4em
+			, level 1/.style={sibling distance=5em}
+			]
+			% σ(α, γ(α), β)
+			\node (root) at (20em, -5em) {\(σ\)}
+				child {node (leaf1) {\(α\)}
+					edge from parent node[left, visible=<.(2)->] (q1) {\(q_1\)}
+				}
+				child {node {\(γ\)}
+					child {node (leaf2) {\(α\)}
+						edge from parent node[right, visible=<.(2)->] (q4) {\(q_4\)}
+					}
+					edge from parent node[right, visible=<.(2)->] (q2) {\(q_2\)}
+				}
+				child {node (leaf3) {\(β\)}
+					edge from parent node[right, visible=<.(2)->] (q3) {\(q_3\)}
+				};
+			\node[above right=0.4em and 0 of root.north, visible=<.(2)->] {\(q_0\)};
+			\begin{scope}[dashed, bend right=5, visible=<.(3)->]
+				\draw[|-> ] (q1)++(160:2.9em) to node[below] {\(p_1\)} (q1);
+				\draw[ -> ] (q1) to node[below] {\(p_2\)} (q2);
+				\draw[ -> ] (q2) to node[below] {\(p_3\)} (q3);
+				\draw[ ->|] (q3) to node[below] {\(p_4\)} +(20:2.9em);
+				\draw[|->|] (leaf1)++(-1em, -1em) to node[below] {\(p_5\)} ++(2em, 0);
+				\draw[|-> ] (q4)++(170:2.9em) to node[below] {\(p_6\)} (q4);
+				\draw[ ->|] (q4) to node[below] {\(p_7\)} +(10:2.4em);
+				\draw[|->|] (leaf2)++(-1em, -1em) to node[below] {\(p_8\)} ++(2em, 0);
+				\draw[|->|] (leaf3)++(-1em, -1em) to node[below] {\(p_9\)} ++(2em, 0);
+			\end{scope}
+		\end{tikzpicture}
+
+		\uncover<.(2)->{
+			\otemporal<.(3)->[r]{wta}{wuta}{} transitions:
+			\otemporal<.(3)->[l]{\(Q × Σ × Q^*\)}{\(Q × Σ × \operatorname{wfsa}(Q)\)}{}
+		}
+	\setcounter{beamerpauses}{1}
+	\pause
+	\column{0.5\linewidth}\centering
+		\setcounter{beamerpauses}{4}
+		\begin{tikzpicture}
+			[ inner sep=0.25em
+			, rounded tree edges={-90}{1}{0.5}
+			, tight
+			, level distance=3em
+			, level 2/.style={sibling distance=7em}
+			, level 4/.style={sibling distance=3em}
+			]
+			\node (root) {\(σ\)}
+				child {node[gray] {\(\symCons\)}
+					child {node {\(α\)}
+						child {node[gray] {\(\symNull\)}
+							edge from parent node[right, visible=<.(3)->] {\(p_5\)}
+						}
+						edge from parent node[sloped, above, visible=<.(2)->] {\(q_1\)}
+					}
+					child {node[gray] {\(\symCons\)}
+						child {node {\(γ\)}
+							child {node[gray] {\(\symCons\)}
+								child {node {\(α\)}
+									child {node[gray] {\(\symNull\)}
+										edge from parent node[right, visible=<.(3)->] {\(p_8\)}
+									}
+								edge from parent node[left, visible=<.(2)->] {\(q_4\)}
+								}
+								child {node[gray] {\(\symNull\)}
+									edge from parent node[right, visible=<.(3)->] {\(p_7\)}
+								}
+								edge from parent node[right, visible=<.(3)->] {\(p_6\)}
+							}
+							edge from parent node[sloped, above, visible=<.(2)->] {\(q_2\)}
+						}
+						child {node[gray] {\(\symCons\)}
+							child {node {\(β\)}
+								child {node[gray] {\(\symNull\)}
+									edge from parent node[right, visible=<.(3)->] {\(p_9\)}
+								}
+								edge from parent node[left, visible=<.(2)->] {\(q_3\)}
+							}
+							child {node[gray] {\(\symNull\)}
+								edge from parent node[right, visible=<.(3)->] {\(p_4\)}
+							}
+							edge from parent node[sloped, above, visible=<.(3)->] {\(p_3\)}
+						}
+						edge from parent node[sloped, above, visible=<.(3)->] {\(p_2\)}
+					}
+					edge from parent node[right, visible=<.(3)->] {\(p_1\)}
+				};
+			\node[above right=0.4em and 0 of root.north, visible=<.(2)->] {\(q_0\)};
+		\end{tikzpicture}
+	\end{columns}
+\end{standaloneframe}
+\end{document}

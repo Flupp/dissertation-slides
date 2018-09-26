@@ -1,0 +1,153 @@
+\documentclass[beamer]{standalone}
+% \usepackage{amsmath}  % has to be loaded before unicode-math
+% \usepackage[math-style=ISO]{unicode-math}
+% \usepackage{tikz}
+% \usetikzlibrary{calc}
+% \usetikzlibrary{fit}
+% \usetikzlibrary{positioning}
+\input{preamble.tex}
+\begin{document}
+%         1 2 3 4 5 6 7 8 9
+\timeline{- + + + - - - - -}{tlDefCorpus}
+\timeline{- - + + - - - - -}{tlDefLklhd}
+\timeline{- - - + - - - - -}{tlDefMle}
+\timeline{- - - - + + + + +}{tlStack}
+\timeline{- - - - + + + + +}{tlPlot}
+\timeline{- - - - - + + + +}{tlPlotUnderFitting}
+\timeline{- - - - - - + + +}{tlPlotOverFitting}
+\timeline{- - - - - - - + +}{tlHoldOut}
+\timeline{- - - - - - - - +}{tlPlotHoldOut}
+\begin{standaloneframe}[t]{\jobname}
+	\centering%
+	\alt<\tlStack>{%
+		%\newcommand{\stacklist}{8/0.390625, 7/0.78125, 6/1.5625, 5/3.125, 4/6.25, 3/12.5, 3/12.5, 2/25, 1/50, 0/100}%
+		%
+		% let n = 8; size = 1.25; dist = 10 in mapM_ (\ (a, b) -> putStrLn $ ", " ++ show a ++ "em/" ++ show b ++ "%") $ map (\i -> (size * (n + dist) * i / (n * (dist + i)), 100 * 2 ** (-i))) [n, n-1 .. 0]
+		\newcommand{\stacklist}
+		{ 1.25em/0.390625%
+		, 1.1580882352941178em/0.78125%
+		, 1.0546875em/1.5625%
+		, 0.9375em/3.125%
+		, 0.8035714285714286em/6.25%
+		, 0.6490384615384616em/12.5%
+		, 0.46875em/25.0%
+		, 0.2556818181818182em/50.0%
+		, 0.0em/100.0%
+		}%
+	}{%
+		\newcommand{\stacklist}{0/100}%
+	}%
+	\begin{tikzpicture}
+	[ data/.style = {align=center, draw, rounded corners}
+	, func/.style = {align=center, draw}
+	]
+		\node[data] (training data) {\strut\color{HKS41K70} training data};
+		\node[func, below = 1.5em of training data, align = center] (training) {training \\ (maximize {\color{HKS41K70}reward})};
+		\foreach \s/\c in \stacklist {
+			\node
+				[ data
+				, left = of training
+				, align = center
+				, color = black!\c
+				, fill = white
+				, xshift = \s
+				, yshift = \s
+				] (model) {model \(\mathbfit{M}\)\\ \((p_θ \mid θ ∈ Θ)\)};
+			\node
+				[ data
+				, below = 1.5em of training
+				, color = black!\c
+				, fill = white
+				, xshift = \s
+				, yshift = \s
+				] (param) {\strut \(\hat{θ} ∈ Θ\)};
+		}
+
+		\draw[->] (training data) -- (training);
+		\draw[->] (model) -- (training);
+		\draw[->] (training) -- (param);
+
+		\visible<\tlHoldOut>{%
+			\node[data, right = 0.3333em of training data] (hold-out data) {\strut\color{HKS57K100} hold-out data};
+			\node[inner sep = 0] at ([yshift = 1.75em]{$(training data)!0.5!(hold-out data)$}) (data) {data};
+			\node[data, fit=(data) (training data) (hold-out data)] {};
+			\node[func, align = center] (validation) at (hold-out data |- param) {hold-out \\ validation};
+			\foreach \s/\c in \stacklist
+				\node
+					[ data
+					, right = of validation
+					, color = black!\c
+					, fill = white
+					, xshift = \s
+					, yshift = \s
+					] (reward) {\strut\color{HKS57K100} reward};
+
+			\draw[->] (hold-out data) -- (validation);
+			\draw[->] (param) -- (validation);
+			\draw[->] (validation) -- (reward);
+		}%
+		\path[use as bounding box] ([xshift = 1.25em]reward.east);
+	\end{tikzpicture}%
+	\only<\tlDefCorpus,\tlDefLklhd,\tlDefMle>{%
+		\\[0.5em]
+		\begin{columns}[t]
+		\column<\tlDefCorpus>{0.19\linewidth}
+			\centering
+			training data
+			\begin{block}{\strut Corpus}
+				\(c\colon \trees{Σ} → ℝ_{≥ 0}\)
+				\\[0.5em] \(\support{c}\) finite
+			\end{block}
+		\column<\tlDefLklhd>{0.35\linewidth}
+			\centering
+			reward\vphantom{g}
+			\begin{block}{\strut Likelihood}
+			\vspace{0.65em}%
+			\(\displaystyle
+				\lklhd{c}{p} = ∏_{t ∈ \support{c}} p(t)^{c(t)}
+			\)
+			\end{block}
+		\column<\tlDefMle>{0.39\linewidth}
+			\centering
+			training
+			\begin{block}{Maximum Likelihood Estimation (mle)}
+			\(\displaystyle
+				\mle[\mathbfit{M}]{c} = \argmax_{θ ∈ Θ} \lklhd{c}{p_θ}
+			\)
+			\end{block}
+		\end{columns}
+	}%
+	\only<\tlPlot>{%
+		\\[1.5em]
+		\begin{tikzpicture}[anchor = base]
+			\only<\tlPlotUnderFitting>{%
+				\fill[fill=lightgray, path fading=east] (0, 0) rectangle (9em, 5em);
+				\node[gray, anchor=base east] at ( 9em, 0.3em) {underfitting};
+			}%
+			\only<\tlPlotOverFitting>{%
+				\fill[fill=lightgray, path fading=west] (11em, 0) rectangle (16em, 5em);
+				\node[gray, anchor=base west] at (11em, 0.3em) {overfitting};
+			}%
+
+			% axes
+			\draw[<->] (18em, 0)
+				-- (0, 0  ) node[pos = 0, below right, xshift = -2em] (xlabel) {model complexity}
+				-- (0, 5em) node[midway, above, rotate = 90] (ylabel) {reward};
+
+			\draw[HKS41K70] (0, 1em)
+				.. controls +(4em, 3em) and +(0, 0) .. (16em, 4.5em)
+				node[right] {reward for training data};
+
+			\visible<\tlPlotHoldOut>{%
+				\draw[HKS57K100] (0, 0.5em)
+					.. controls +(0  , 0) and +(-4em, 0) .. (10em, 3em)
+					.. controls +(3em, 0) and +( 0  , 0) .. (16em, 2.5em)
+					node[right] {reward for hold-out data};
+
+				\draw[dashed] (10em, -0.05) -- ++(0, 5em);
+				\node at ({10em, 0} |- xlabel.base) {chosen model};
+			}%
+		\end{tikzpicture}
+	}%
+\end{standaloneframe}
+\end{document}

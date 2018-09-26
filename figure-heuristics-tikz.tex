@@ -1,0 +1,29 @@
+\begin{tikzpicture}[anchor=north]
+	\path (-1.5em, 2em) rectangle (29.5em, -10em);
+	\node at (0, 0) {\(\begin{aligned}
+		A & \uncover<2->{{} \mapsto 3}
+	\\	B & \uncover<2->{{} \mapsto 4}
+	\\	C & \uncover<2->{{} \mapsto 6}
+	\\	D & \uncover<2->{{} \mapsto 9}
+	\\	\vdots
+	\end{aligned}\)};
+	\node<2-> at (0.2em, 2em) {counts:};
+	\node<3->[single arrow, fill=HKS41K20, align=center] at (4em, -1em) {create \\ mergers};
+	\node<3-> (n2) at (10em, 0) {\(\begin{aligned}
+		& \text{mrg \(A\), \(B\)}
+	\\	& \text{mrg \(A\), \(C\)}
+	\\	& \text{mrg \(B\), \(C\)}
+	\\	& \text{mrg \(A\), \(D\)}
+	\\	& \text{mrg \(B\), \(D\)}
+	\\	& \vdots\qquad
+	\end{aligned}\)};
+	\draw<4->[rounded corners, color=HKS07K100] (n2.north west) rectangle (n2.east);
+	\node<5->[single arrow, fill=HKS41K20, align=center] at (15em, -1em) {saturate \\ mergers};
+	\node<5-> (n3) at (24em, 0) {\(\begin{alignedat}{2}
+		& \text{mrg \(A\), \(B\), \(E\)}        && \uncover<6->{{} \mapsto 0.3}
+	\\	& \text{mrg \(A\), \(C\)}               && \uncover<6->{{} \mapsto 0.5}
+	\\	& \text{mrg \(B\), \(C\), \(D\), \(F\)} && \uncover<6->{{} \mapsto 0.1}
+	\end{alignedat}\)};
+	\node<6-> at (26.5em, 2em) {likelihoods:};
+	\draw<7->[rounded corners, color=HKS07K100] ($(n3.west) - (0, 0.8em)$) rectangle ($(n3.east) + (0, 0.8em)$);
+\end{tikzpicture}

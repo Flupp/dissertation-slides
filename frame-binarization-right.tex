@@ -1,0 +1,112 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+\begin{columns}[T]
+\column{0.5\linewidth}\centering
+	\begin{uncoverenv}<2->
+	\only<5->{\scriptsize}%
+	\begin{tikzpicture}
+	[ anchor=base
+	, inner sep=0.25em
+	, level distance=3em
+	, rounded tree edges={-90}{1}{0.5}
+	, sibling distance=5em
+	]
+		\node (root) {\(a\)}
+			child { node {\(\symSnoc\)}
+				child { node {\(\symSnoc\)}
+					child { node {\(\symSnoc\)}
+						child { node {\(\symNull\)}
+							edge from parent node[visible=<4->, left] {\(\stateS{p_{\alt<5->10}}\)}
+						}
+						child { node[subtree] {\(t'_1\)}
+							edge from parent node[visible=<3->, right] {\(\stateT{q_1}\)}
+						}
+						edge from parent node[visible=<4->, left] {\(\stateS{p_{\alt<5->21}}\)}
+					}
+					child { node[subtree] {\(t'_2\)}
+						edge from parent node[visible=<3->, right] {\(\stateT{q_2}\)}
+					}
+					edge from parent node[visible=<4->, left] {\(\stateS{p_{\alt<5->12}}\)}
+				}
+				child { node[subtree] {\(t'_3\)}
+					edge from parent node[visible=<3->, right] {\(\stateT{q_{\alt<5->13}}\)}
+				}
+				edge from parent node[visible=<4->, left] {\(\stateS{p_{\alt<5->23}}\)}
+			};
+		\node[visible=<3->, above left=0.4em and 0 of root.north, tight] {\(\stateT{q_0}\)};
+	\end{tikzpicture}
+	\end{uncoverenv}
+	\begin{onlyenv}<5->
+	\vfill%
+	\inlineblock<6->{ta \(ℳ'\)}\hfill\null
+	\begin{align*}
+		\stateT{q_0} & \xrightarrow{a} \stateS{p_2}
+	\\
+		\stateS{p_2} & \xrightarrow{\symSnoc} \stateT{q_1}\,\stateS{p_1}
+	\\
+		\stateS{p_1} & \xrightarrow{\symSnoc} \stateT{q_2}\,\stateS{p_2}
+	\\
+		\stateS{p_1} & \xrightarrow{\symNull} ε
+	\end{align*}
+	\end{onlyenv}
+\column{0.5\linewidth}\centering
+	{
+	\only<5->{\scriptsize}%
+	\uncover<2->{\(\mathllap{\overset{\inlineblock<6>{h_{\mathrm{r}}}}{\longmapsto}}\)}%
+	\hfill%
+	\begin{tikzpicture}
+	[ anchor=base
+	, baseline=(current bounding box.center)
+	, inner sep=0.25em
+	, level distance=4em
+	, rounded tree edges={-90}{1}{0.5}
+	, sibling distance=5em
+	]
+		\node (root) {\(a\)}
+			child {node[subtree] {\(t_1\)}
+				edge from parent node[visible=<3->, pos=0.5, left=0.2em] (q1) {\(\stateT{q_1}\)}
+			}
+			child {node[subtree] {\(t_2\)}
+				edge from parent node[visible=<3->, pos=0.3, right] (q2) {\(\stateT{q_2}\)}
+			}
+			child {node[subtree] {\(t_3\)}
+				edge from parent node[visible=<3->, pos=0.5, right=0.1em] (q3) {\(\stateT{q_{\alt<5->13}}\)}
+			};
+		\node[visible=<3->, above right=0.4em and 0 of root.north, tight] {\(\stateT{q_0}\)};
+		\begin{scope}[visible=<4->, dashed, bend right=5, tight]
+			\path[|-> ] (q1)++(160:2.9em) to node[below] (p0) {\(\stateS{p_{\alt<5->10}}\)} (q1);
+			\path[ -> ] (q1) to node[below] (p1) {\(\stateS{p_{\alt<5->21}}\)} (q2);
+			\path[ -> ] (q2) to node[below] (p2) {\(\stateS{p_{\alt<5->12}}\)} (q3);
+			\path[ ->|] (q3) to node[below] (p3) {\(\stateS{p_{\alt<5->23}}\)} +(20:3.1em);
+			\draw[ -> ] (p0) to (p1);
+			\draw[ -> ] (p1) to (p2);
+			\draw[ -> ] (p2) to (p3);
+		\end{scope}
+	\end{tikzpicture}
+	\hfill%
+	}
+
+	\begin{onlyenv}<5->
+	\vspace{5em}%
+	\inlineblock<6->{uta \(ℳ\)}\hfill\null
+	\begin{equation*}
+		\stateT{q_0} \xrightarrow{a}
+			\tikz[baseline = (current bounding box.center)]{\node[draw, rounded corners]{\tikz{
+				\node[state] (p1) {\(\stateS{p_1}\)};
+				\node[state] (p2) at (3em, 0) {\(\stateS{p_2}\)};
+				\draw[<-] (p1) -- ++(-2em, 0);
+				\draw[->] (p2) -- ++( 2em, 0);
+				\draw[->] (p1) to[bend left] node[above, tight] {\(\stateT{q_1}\)} (p2);
+				\draw[->] (p2) to[bend left] node[below, tight] {\(\stateT{q_2}\)} (p1);
+			}};}
+	\end{equation*}
+	\vspace{-1em}%
+	\begin{theorem}<6->
+		\(⟦ℳ'⟧(h_{\mathrm{r}}^{-1}(t)) = ⟦ℳ⟧(t)\) \hfill \(t ∈ \treesU{Σ}\)
+	\end{theorem}
+	\end{onlyenv}
+\end{columns}
+\end{standaloneframe}
+\end{document}

@@ -1,0 +1,159 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\title{\jobname}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+\alt<-13>
+	{\frametitle{Tree Automata (ta)}}
+	{\frametitle{Weighted Tree Automata (wta)}}
+\begin{columns}[T]
+\column{0.45\linewidth}
+	\begin{overprint}
+	\onslide<1->
+		\begin{align*}
+			Q & = \{\nt{S}, \nt{A}\}
+		\\
+			Σ & = \{σ^{(2)}, α^{(0)}\}
+		\\
+			I & = \{\nt{S}\}
+		\end{align*}
+		\uncover<14->{\[
+			ι\colon \nt{S} ↦ 1
+		\]}
+		\begin{alignat*}{2}
+			\otemporal<14->[r]{Δ}{δ}{}\colon
+			\nt{S} & → σ(\nt{S}, \nt{A}) && \uncover<14->{↦ 0.25}
+		\\
+			\nt{S} & → σ(\nt{A}, \nt{S}) && \uncover<14->{↦ 0.25}
+		\\
+			\nt{S} & → α && \uncover<14->{↦ 0.5}
+		\\
+			\nt{A} & → α && \uncover<14->{↦ 1}
+		\end{alignat*}
+	\end{overprint}
+\column{0.54\linewidth}
+	\begin{overprint}
+	\onslide<1>
+		\begin{block}{tree automaton (ta)}
+			tuple \((Q, Σ, I, Δ)\) where
+			\begin{itemize}
+			\item
+				\(Q\) alphabet \hfill (\emph{states})
+			\item
+				\(Σ\) ranked alphabet \hfill (\emph{terminals})
+			\item
+				\(I ⊆ Q\) alphabet \hfill (\emph{root states})
+			\item
+				\(Δ\) is a finite set of \emph{transitions} of form \(A_0 → σ(A_1, \dots, A_k)\) where \(k ∈ ℕ\), \(σ ∈ Σ^{(k)}\), \(A_i ∈ Q\).
+			\end{itemize}
+		\end{block}
+	\onslide<2-12>\setcounter{beamerpauses}{2}
+		\begin{center}
+		\begin{tikzpicture}[anchor=base, level distance=3em]
+			\node (t) {\(σ\)}
+				child[uncover={<-.(2),.(5)->}] { node {\(σ\)}
+					child[uncover={<-.(2),.(6)->}] { node {\(α\)}
+						edge from parent node[left, vuncover={<.(2)-><.(2),.(5)-.(6)>}] {\(\nt{A}\)}
+					}
+					child[uncover={<-.(2),.(7)->}] { node {\(σ\)}
+						child[uncover={<-.(2),.(8)->}] { node {\(α\)}
+							edge from parent node[left, vuncover={<.(2)-><.(2),.(7)-.(8),.(10)->}] {\(\nt{\alt<.(11)->AS}\)}
+						}
+						child[uncover={<-.(2),.(9)->}] { node {\(α\)}
+							edge from parent node[right, vuncover={<.(2)-><.(2),.(7),.(9),.(10)->}] {\(\nt{\alt<.(11)->SA}\)}
+						}
+						edge from parent node[right, vuncover={<.(2)-><.(2),.(5),.(7),.(10)->}] {\(\nt{S}\)}
+					}
+					edge from parent node[left, vuncover={<.(2)-><.(2)-.(3),.(5)>}] {\(\nt{S}\)}
+				}
+				child[uncover={<-.(2),.(4)->}] { node {\(α\)}
+					edge from parent node[right, vuncover={<.(2)-><.(2)-.(4)>}] {\(\nt{A}\)}
+				};
+			\node[above right=0 of t.north, vuncover={<.(2)-><.(2)-.(3)>}] {\(\nt{S}\)};
+			\node[left=1em of t] {\(t\colon\)};
+		\end{tikzpicture}
+		\end{center}
+	\onslide<13>
+		\begin{block}{bottom-up deterministic ta}
+			\centering
+			\((Q, Σ, I, Δ)\) is bottom-up deterministic
+
+			\emph{if}
+
+			for every \(σ(A_1, \dots, A_k)\) there is at most one \(A_0\) such that \(A_0 → σ(A_1, \dots, A_k) ∈ Δ\)
+		\end{block}
+		\begin{flushright}
+			\(\implies\) there is at most one valid run for a tree
+		\end{flushright}
+	\onslide<14>
+		\begin{block}{weighted tree automaton (wta)}
+			tuple \(ℳ = (\mathscr{A}, ι, δ)\) where
+			\begin{itemize}
+			\item
+				\(\mathscr{A} = (Q, Σ, I, Δ)\) is a ta
+			\item
+				\(ι\colon I → [0, 1]\) \hfill (\emph{root weights})
+			\item
+				\(δ\colon Δ → [0, 1]\) \hfill (\emph{transition weights})
+			\end{itemize}
+		\end{block}
+	\onslide<15-17>\setcounter{beamerpauses}{15}\centering
+		\begin{tikzpicture}
+			\node (t) {\(σ\)}
+				child { node {\(α\)}
+					edge from parent node[left] {\(\nt{S}\)}
+				}
+				child { node {\(α\)}
+					edge from parent node[right] {\(\nt{A}\)}
+				};
+			\node[above right=0 of t.north] {\(\nt{S}\)};
+			\node[left=1em of t] {\(t\), \(r_1\):};
+		\end{tikzpicture}
+		\quad
+		\uncover<.(2)->{%
+		\begin{tikzpicture}
+			\node (t) {\(σ\)}
+				child { node {\(α\)}
+					edge from parent node[left] {\(\nt{A}\)}
+				}
+				child { node {\(α\)}
+					edge from parent node[right] {\(\nt{S}\)}
+				};
+			\node[above right=0 of t.north] {\(\nt{S}\)};
+			\node[left=1em of t] {\(t\), \(r_2\):};
+		\end{tikzpicture}
+		}%
+		\begin{align*}
+			\otemporal<.(3)->[r]{⟦ℳ⟧(t, r_1)}{⟦ℳ⟧(t)}{} = {}& ι(\nt{S})
+		\\	{} ⋅ {}& δ(\nt{S} → σ(\nt{S}, \nt{A}))
+		\\	{} ⋅ {}& δ(\nt{S} → α)
+		\\	{} ⋅ {}& δ(\nt{A} → α)
+		\only<.(2)->{
+		\\	\otemporal<.(3)->[r]{⟦ℳ⟧(t, r_2) = {}}{{} + {}}{} & ι(\nt{S})
+		\\	{} ⋅ {}& δ(\nt{S} → σ(\nt{A}, \nt{S}))
+		\\	{} ⋅ {}& δ(\nt{A} → α)
+		\\	{} ⋅ {}& δ(\nt{S} → α)
+		%\\	{} = {}& 0.125
+		}
+		\end{align*}
+	\onslide<18->
+		\begin{block}{semi-probabilistic wta}
+			\begin{itemize}
+			\item
+				root weights sum up to \(1\)
+			\item
+				weights of transitions with same left-hand-side sum up to \(1\)
+			\end{itemize}
+		\end{block}
+		\begin{block}{probabilistic wta}
+			\begin{itemize}
+			\item
+				semi-probabilistic
+			\item
+				weights of all trees sum up to \(1\)
+			\end{itemize}
+		\end{block}
+	\end{overprint}
+\end{columns}%
+\end{standaloneframe}
+\end{document}

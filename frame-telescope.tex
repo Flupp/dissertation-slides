@@ -1,0 +1,92 @@
+\documentclass[beamer]{standalone}
+\input{preamble.tex}
+\begin{document}
+\begin{standaloneframe}{\jobname}
+	\centering
+	\begin{overprint}
+	\onslide<2-3>\centering
+		\begin{tikzpicture}
+			\begin{scope}[anchor=base, level distance=1em, tree layout]
+			\node {S}
+				child { node {NP}
+					child { node {PRP} child { node (I) {I} }
+					}
+				}
+				child { node {VP}
+					child { node {VBP} child { node {see} }
+					}
+					child { node {NP}
+						child { node {DT} child { node {the} }
+						}
+						child { node {NN} child { node {man} }
+						}
+					}
+					child { node {PP}
+						child { node {IN} child { node {with} }
+						}
+						child { node {NP}
+							child { node {DT} child { node {the} }
+							}
+							child { node {NN} child { node {telescope} }
+							}
+						}
+					}
+				};
+			\end{scope}
+			\path (I) -- ++(21.5em, 0);
+		\end{tikzpicture}
+	\onslide<4>\centering
+		\begin{tikzpicture}
+			\begin{scope}[anchor=base, level distance=1em, tree layout]
+			\node {S}
+				child { node {NP}
+					child { node {PRP} child { node (I) {I} }
+					}
+				}
+				child { node {VP}
+					child { node {VBP} child { node {see} }
+					}
+					child[sibling pre sep=4.5em] { node {NP}
+						child[sibling pre sep=0] { node {NP}
+							child { node {DT} child { node {the} }
+							}
+							child { node {NN} child { node {man} }
+							}
+						}
+						child[sibling pre sep=0] { node {PP}
+							child { node {IN} child { node {with} }
+							}
+							child { node {NP}
+								child { node {DT} child { node {the} }
+								}
+								child { node {NN} child { node {telescope} }
+								}
+							}
+						}
+					}
+				};
+			\end{scope}
+			\path (I) -- ++(21.5em, 0);
+		\end{tikzpicture}
+	\end{overprint}
+
+	\setcounter{beamerpauses}{3}
+	\uncover<.(1)->{%
+		I \(→\)
+		\raisebox{-0.4\height}{%
+			\alt<.(1)>{%
+				\includegraphics[width=5em]{figure-telescope-reflected.png}%
+				\qquad%
+				\includegraphics[width=5em]{figure-telescope-without.png}%
+			}{%
+				\includegraphics[width=5em]{figure-telescope-without-reflected.png}%
+				\qquad%
+				\includegraphics[width=5em]{figure-telescope.png}%
+			}%
+		}
+		\(←\) man
+
+		{\hfill\tiny\color{gray}\url{http://www.clipartpanda.com/clipart_images/cartoon-boy-with-telescope-11578232}}
+	}%
+\end{standaloneframe}
+\end{document}
