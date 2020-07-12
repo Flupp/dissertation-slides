@@ -2,6 +2,8 @@
 
 *by Toni Dietze*
 
+*A compiled PDF of the slides is available under [Releases](https://github.com/Flupp/dissertation-slides/releases). The thesis is published on [Qucosa](https://nbn-resolving.org/urn:nbn:de:bsz:14-qucosa2-341106).*
+
 The use of computers and algorithms to deal with human language, in both spoken and written form, is summarized by the term natural language processing (nlp).
 Modeling language in a way that is suitable for computers plays an important role in nlp.
 One idea is to use formalisms from theoretical computer science for that purpose.
